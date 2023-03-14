@@ -18,11 +18,11 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/fnproject/fn/api/agent/grpc"
-	"github.com/fnproject/fn/api/common"
-	"github.com/fnproject/fn/api/models"
-	pool "github.com/fnproject/fn/api/runnerpool"
-	"github.com/fnproject/fn/grpcutil"
+	pb "github.com/dukhyungkim/fn/api/agent/grpc"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/api/models"
+	pool "github.com/dukhyungkim/fn/api/runnerpool"
+	"github.com/dukhyungkim/fn/grpcutil"
 
 	pb_empty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/sirupsen/logrus"

@@ -3,7 +3,7 @@ package server
 import (
 	"log"
 
-	"github.com/fnproject/fn/fnext"
+	"github.com/dukhyungkim/fn/fnext"
 )
 
 // TODO: Move this into `github.com/fnproject/fn` package after main is moved out of root dir.

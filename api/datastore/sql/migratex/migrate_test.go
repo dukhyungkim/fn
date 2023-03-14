@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	_ "github.com/fnproject/fn/api/datastore/sql/sqlite"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/sqlite"
 	"github.com/jmoiron/sqlx"
 )
 

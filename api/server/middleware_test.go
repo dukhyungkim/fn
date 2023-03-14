@@ -12,9 +12,9 @@ import (
 
 	"fmt"
 
-	"github.com/fnproject/fn/api/datastore"
-	"github.com/fnproject/fn/api/models"
-	"github.com/fnproject/fn/fnext"
+	"github.com/dukhyungkim/fn/api/datastore"
+	"github.com/dukhyungkim/fn/api/models"
+	"github.com/dukhyungkim/fn/fnext"
 	"github.com/gin-gonic/gin"
 )
 

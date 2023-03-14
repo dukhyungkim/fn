@@ -1,12 +1,14 @@
-/* The consistent hash ring from the original fnlb.
-   The behaviour of this depends on changes to the runner list leaving it relatively stable.
+/*
+The consistent hash ring from the original fnlb.
+
+	The behaviour of this depends on changes to the runner list leaving it relatively stable.
 */
 package runnerpool
 
 import (
 	"context"
 
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/models"
 
 	"github.com/dchest/siphash"
 	"github.com/sirupsen/logrus"

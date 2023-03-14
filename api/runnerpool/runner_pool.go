@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/fnproject/fn/api/common"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/api/models"
 )
 
 // Placer implements a placement strategy for calls that are load-balanced

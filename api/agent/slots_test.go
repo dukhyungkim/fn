@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fnproject/fn/api/id"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/id"
+	"github.com/dukhyungkim/fn/api/models"
 )
 
 type testSlot struct {

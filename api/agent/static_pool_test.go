@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	pool "github.com/fnproject/fn/api/runnerpool"
+	pool "github.com/dukhyungkim/fn/api/runnerpool"
 )
 
 func setupStaticPool(runners []string) pool.RunnerPool {

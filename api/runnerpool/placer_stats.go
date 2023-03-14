@@ -5,7 +5,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api/common"
 
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/stats"

@@ -1,3 +1,4 @@
+//go:build go1.7
 // +build go1.7
 
 package docker
@@ -13,7 +14,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api/common"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/stats"

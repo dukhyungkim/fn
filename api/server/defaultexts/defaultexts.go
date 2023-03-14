@@ -5,9 +5,9 @@ package defaultexts
 
 import (
 	// import all datastore modules for runtime config
-	_ "github.com/fnproject/fn/api/agent/drivers/docker"
-	_ "github.com/fnproject/fn/api/datastore/sql"
-	_ "github.com/fnproject/fn/api/datastore/sql/mysql"
-	_ "github.com/fnproject/fn/api/datastore/sql/postgres"
-	_ "github.com/fnproject/fn/api/datastore/sql/sqlite"
+	_ "github.com/dukhyungkim/fn/api/agent/drivers/docker"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/mysql"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/postgres"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/sqlite"
 )

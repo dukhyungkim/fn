@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/models"
 
-	"github.com/fnproject/fn/api/agent/drivers"
-	"github.com/fnproject/fn/api/agent/drivers/stats"
+	"github.com/dukhyungkim/fn/api/agent/drivers"
+	"github.com/dukhyungkim/fn/api/agent/drivers/stats"
 	docker "github.com/fsouza/go-dockerclient"
 
 	"github.com/sirupsen/logrus"

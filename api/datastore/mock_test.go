@@ -3,8 +3,8 @@ package datastore
 import (
 	"testing"
 
-	"github.com/fnproject/fn/api/datastore/datastoretest"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/datastore/datastoretest"
+	"github.com/dukhyungkim/fn/api/models"
 )
 
 func TestDatastore(t *testing.T) {

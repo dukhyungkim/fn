@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/fnproject/fn/api/agent"
-	_ "github.com/fnproject/fn/api/agent/drivers/docker"
-	_ "github.com/fnproject/fn/api/datastore/sql/sqlite"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/agent"
+	_ "github.com/dukhyungkim/fn/api/agent/drivers/docker"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/sqlite"
+	"github.com/dukhyungkim/fn/api/models"
 	"github.com/gin-gonic/gin"
 )
 

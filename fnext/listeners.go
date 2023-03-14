@@ -3,7 +3,7 @@ package fnext
 import (
 	"context"
 
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/models"
 )
 
 // AppListener is an interface used to inject custom code at key points in the app lifecycle.

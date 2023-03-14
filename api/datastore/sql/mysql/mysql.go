@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/fnproject/fn/api/datastore/sql/dbhelper"
+	"github.com/dukhyungkim/fn/api/datastore/sql/dbhelper"
 	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"

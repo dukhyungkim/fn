@@ -9,7 +9,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api/common"
 )
 
 var (

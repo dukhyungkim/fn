@@ -14,7 +14,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/models"
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/trace"
 )

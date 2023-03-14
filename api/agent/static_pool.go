@@ -4,7 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 
-	pool "github.com/fnproject/fn/api/runnerpool"
+	pool "github.com/dukhyungkim/fn/api/runnerpool"
 
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/plugin/ocgrpc"

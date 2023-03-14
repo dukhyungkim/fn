@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/fnproject/fn/api"
+	"github.com/dukhyungkim/fn/api"
 	"github.com/gin-gonic/gin"
 )
 

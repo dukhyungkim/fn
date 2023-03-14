@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api/common"
 	"golang.org/x/sys/unix"
 )
 

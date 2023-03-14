@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"github.com/fnproject/fn/api/datastore/sql/dbhelper"
+	"github.com/dukhyungkim/fn/api/datastore/sql/dbhelper"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"

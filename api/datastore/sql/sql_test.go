@@ -6,14 +6,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/fnproject/fn/api/datastore/datastoretest"
-	"github.com/fnproject/fn/api/datastore/internal/datastoreutil"
-	"github.com/fnproject/fn/api/datastore/sql/migratex"
-	"github.com/fnproject/fn/api/datastore/sql/migrations"
-	_ "github.com/fnproject/fn/api/datastore/sql/mysql"
-	_ "github.com/fnproject/fn/api/datastore/sql/postgres"
-	_ "github.com/fnproject/fn/api/datastore/sql/sqlite"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/datastore/datastoretest"
+	"github.com/dukhyungkim/fn/api/datastore/internal/datastoreutil"
+	"github.com/dukhyungkim/fn/api/datastore/sql/migratex"
+	"github.com/dukhyungkim/fn/api/datastore/sql/migrations"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/mysql"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/postgres"
+	_ "github.com/dukhyungkim/fn/api/datastore/sql/sqlite"
+	"github.com/dukhyungkim/fn/api/models"
 	"github.com/jmoiron/sqlx"
 )
 

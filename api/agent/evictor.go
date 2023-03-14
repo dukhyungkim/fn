@@ -4,7 +4,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/fnproject/fn/api/id"
+	"github.com/dukhyungkim/fn/api/id"
 
 	"github.com/sirupsen/logrus"
 )

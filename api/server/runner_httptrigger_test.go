@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fnproject/fn/api/agent"
-	"github.com/fnproject/fn/api/datastore"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/agent"
+	"github.com/dukhyungkim/fn/api/datastore"
+	"github.com/dukhyungkim/fn/api/models"
 )
 
 func envTweaker(name, value string) func() {

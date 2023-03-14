@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"github.com/fnproject/fn/api/version"
+	"github.com/dukhyungkim/fn/api/version"
 	"github.com/gin-gonic/gin"
 )
 

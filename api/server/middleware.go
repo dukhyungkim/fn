@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/fnproject/fn/api/common"
-	"github.com/fnproject/fn/fnext"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/fnext"
 	"github.com/gin-gonic/gin"
 )
 

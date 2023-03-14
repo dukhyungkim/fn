@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/fnproject/fn/api/datastore/sql/migratex"
-	"github.com/fnproject/fn/api/id"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/datastore/sql/migratex"
+	"github.com/dukhyungkim/fn/api/id"
+	"github.com/dukhyungkim/fn/api/models"
 	"github.com/jmoiron/sqlx"
 )
 

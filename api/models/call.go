@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/fnproject/fn/api/agent/drivers/stats"
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api/agent/drivers/stats"
+	"github.com/dukhyungkim/fn/api/common"
 )
 
 const (

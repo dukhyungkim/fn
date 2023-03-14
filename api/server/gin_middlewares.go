@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fnproject/fn/api"
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api"
+	"github.com/dukhyungkim/fn/api/common"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

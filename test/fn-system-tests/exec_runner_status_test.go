@@ -13,12 +13,12 @@ import (
 	"testing"
 	"time"
 
-	runner "github.com/fnproject/fn/api/agent/grpc"
+	runner "github.com/dukhyungkim/fn/api/agent/grpc"
 	"google.golang.org/grpc"
 
-	"github.com/fnproject/fn/api/id"
-	"github.com/fnproject/fn/api/models"
-	"github.com/fnproject/fn/api/runnerpool"
+	"github.com/dukhyungkim/fn/api/id"
+	"github.com/dukhyungkim/fn/api/models"
+	"github.com/dukhyungkim/fn/api/runnerpool"
 	pb_empty "github.com/golang/protobuf/ptypes/empty"
 	pb_struct "github.com/golang/protobuf/ptypes/struct"
 )

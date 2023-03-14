@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/fnproject/fn/api/agent"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/agent"
+	"github.com/dukhyungkim/fn/api/models"
 	"go.opencensus.io/trace"
 )
 

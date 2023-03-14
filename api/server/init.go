@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/fnproject/fn/api/common"
-	"github.com/fnproject/fn/api/id"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/api/id"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )

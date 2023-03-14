@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/fnproject/fn/api/datastore/sql/dbhelper"
+	"github.com/dukhyungkim/fn/api/datastore/sql/dbhelper"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )

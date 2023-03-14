@@ -3,8 +3,8 @@ package agent
 import (
 	"context"
 
-	"github.com/fnproject/fn/api/models"
-	"github.com/fnproject/fn/fnext"
+	"github.com/dukhyungkim/fn/api/models"
+	"github.com/dukhyungkim/fn/fnext"
 )
 
 type callTrigger interface {

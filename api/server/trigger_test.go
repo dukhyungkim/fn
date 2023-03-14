@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fnproject/fn/api/datastore"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/datastore"
+	"github.com/dukhyungkim/fn/api/models"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	bytes2 "bytes"
 	"crypto/tls"
 	"encoding/json"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/models"
 	"github.com/gin-gonic/gin"
 	"net/http/httptest"
 	"testing"

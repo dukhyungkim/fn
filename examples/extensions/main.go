@@ -6,8 +6,8 @@ import (
 	"html"
 	"net/http"
 
-	"github.com/fnproject/fn/api/models"
-	"github.com/fnproject/fn/api/server"
+	"github.com/dukhyungkim/fn/api/models"
+	"github.com/dukhyungkim/fn/api/server"
 )
 
 func main() {

@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fnproject/fn/api/agent"
-	"github.com/fnproject/fn/api/common"
-	"github.com/fnproject/fn/api/models"
+	"github.com/dukhyungkim/fn/api/agent"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/api/models"
 	"go.opencensus.io/plugin/ochttp/propagation/b3"
 	"go.opencensus.io/trace"
 )

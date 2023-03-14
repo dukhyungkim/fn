@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fnproject/fn/api/server"
+	"github.com/dukhyungkim/fn/api/server"
 )
 
 func main() {

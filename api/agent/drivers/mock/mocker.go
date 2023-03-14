@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fnproject/fn/api/agent/drivers"
-	"github.com/fnproject/fn/api/common"
+	"github.com/dukhyungkim/fn/api/agent/drivers"
+	"github.com/dukhyungkim/fn/api/common"
 )
 
 func New() drivers.Driver {
