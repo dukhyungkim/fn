@@ -221,7 +221,7 @@ func CleanUpSystem(st *state) error {
 
 func SetUpAPINode(ctx context.Context) (*server.Server, error) {
 	curDir := pwd()
-	defaultDB := fmt.Sprintf("sqlite3://%s/data/fn.db", curDir)
+	defaultDB := fmt.Sprintf("sqlite://%s/data/fn.db", curDir)
 	nodeType := server.ServerTypeAPI
 	opts := make([]server.Option, 0)
 	opts = append(opts, server.WithWebPort(APIPort))

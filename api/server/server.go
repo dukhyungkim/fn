@@ -244,7 +244,7 @@ func NewFromEnv(ctx context.Context, opts ...Option) *Server {
 	case ServerTypePureRunner: // nothing
 	default:
 		// only want to activate these for full and api nodes
-		defaultDB = fmt.Sprintf("sqlite3://%s/data/fn.db", curDir)
+		defaultDB = fmt.Sprintf("sqlite://%s/data/fn.db", curDir)
 	}
 	opts = append(opts, WithWebPort(getEnvInt(EnvPort, DefaultPort)))
 	opts = append(opts, WithGRPCPort(getEnvInt(EnvGRPCPort, DefaultGRPCPort)))
@@ -516,15 +516,15 @@ func New(ctx context.Context, opts ...Option) *Server {
 		Router:      engine,
 		AdminRouter: engine,
 		svcConfigs: map[string]*http.Server{
-			WebServer: &http.Server{
+			WebServer: {
 				MaxHeaderBytes:    getEnvInt(EnvMaxHeaderSize, http.DefaultMaxHeaderBytes),
 				ReadHeaderTimeout: getEnvDuration(EnvReadHeaderTimeout, 0),
 				ReadTimeout:       getEnvDuration(EnvReadTimeout, 0),
 				WriteTimeout:      getEnvDuration(EnvWriteTimeout, 0),
 				IdleTimeout:       getEnvDuration(EnvHTTPIdleTimeout, 0),
 			},
-			AdminServer: &http.Server{},
-			GRPCServer:  &http.Server{},
+			AdminServer: {},
+			GRPCServer:  {},
 		},
 		// MUST initialize these before opts
 		appListeners:     new(appListeners),
@@ -953,7 +953,7 @@ func (s *Server) goneResponse(c *gin.Context) {
 	c.Status(http.StatusGone)
 }
 
-func (s *Server) bindHandlers(ctx context.Context) {
+func (s *Server) bindHandlers(_ context.Context) {
 	engine := s.Router
 	admin := s.AdminRouter
 	// now for extensible middleware

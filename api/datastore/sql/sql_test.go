@@ -47,7 +47,7 @@ func newWithMigrations(ctx context.Context, url *url.URL) (*SQLStore, error) {
 func TestDatastore(t *testing.T) {
 	ctx := context.Background()
 	defer os.RemoveAll("sqlite_test_dir")
-	u, err := url.Parse("sqlite3://sqlite_test_dir")
+	u, err := url.Parse("sqlite://sqlite_test_dir")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -140,7 +140,7 @@ func TestDatastore(t *testing.T) {
 func TestClose(t *testing.T) {
 	ctx := context.Background()
 	defer os.RemoveAll("sqlite_test_dir")
-	u, err := url.Parse("sqlite3://sqlite_test_dir")
+	u, err := url.Parse("sqlite://sqlite_test_dir")
 	if err != nil {
 		t.Fatal(err)
 	}

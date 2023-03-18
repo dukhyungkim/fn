@@ -8,7 +8,8 @@ import (
 
 	"github.com/dukhyungkim/fn/api/datastore/sql/dbhelper"
 	"github.com/jmoiron/sqlx"
-	"github.com/mattn/go-sqlite3"
+	"modernc.org/sqlite"
+	sqlite3 "modernc.org/sqlite/lib"
 )
 
 type sqliteHelper int
@@ -59,9 +60,10 @@ func (sqliteHelper) String() string {
 }
 
 func (sqliteHelper) IsDuplicateKeyError(err error) bool {
-	sqliteErr, ok := err.(sqlite3.Error)
+	sqliteErr, ok := err.(*sqlite.Error)
+	code := sqliteErr.Code()
 	if ok {
-		if sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique || sqliteErr.ExtendedCode == sqlite3.ErrConstraintPrimaryKey {
+		if code == sqlite3.SQLITE_CONSTRAINT_UNIQUE || code == sqlite3.SQLITE_CONSTRAINT_PRIMARYKEY {
 			return true
 		}
 	}
