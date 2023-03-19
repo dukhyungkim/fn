@@ -1,12 +1,12 @@
 package mysql
 
 import (
+	"errors"
 	"net/url"
 	"strings"
 
 	"github.com/dukhyungkim/fn/api/datastore/sql/dbhelper"
 	"github.com/go-sql-driver/mysql"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -22,8 +22,8 @@ func (mysqlHelper) PreConnect(url *url.URL) (string, error) {
 
 func (mysqlHelper) PostCreate(db *sqlx.DB) (*sqlx.DB, error) {
 	return db, nil
-
 }
+
 func (mysqlHelper) CheckTableExists(tx *sqlx.Tx, table string) (bool, error) {
 	query := tx.Rebind(`SELECT count(*)
 	FROM information_schema.TABLES
@@ -46,9 +46,9 @@ func (mysqlHelper) String() string {
 }
 
 func (mysqlHelper) IsDuplicateKeyError(err error) bool {
-	switch mErr := err.(type) {
-	case *mysql.MySQLError:
-		if mErr.Number == 1062 {
+	var dbErr *mysql.MySQLError
+	if errors.As(err, &dbErr) {
+		if dbErr.Number == ErrDupEntry {
 			return true
 		}
 	}

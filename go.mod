@@ -11,7 +11,7 @@ require (
 	github.com/fsouza/go-dockerclient v1.4.0
 	github.com/gin-contrib/cors v0.0.0-20170318125340-cf4846e6a636
 	github.com/gin-gonic/gin v1.3.0
-	github.com/go-sql-driver/mysql v1.4.0
+	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang/groupcache v0.0.0-20180924190550-6f2cf27854a4
 	github.com/golang/protobuf v1.3.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
@@ -71,7 +71,6 @@ require (
 	golang.org/x/tools v0.0.0-20201124115921-2c860bdd6e78 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/api v0.3.2 // indirect
-	google.golang.org/appengine v1.4.0 // indirect
 	google.golang.org/genproto v0.0.0-20190425155659-357c62f0e4bb // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect

@@ -1,11 +1,12 @@
 package postgres
 
 import (
+	"errors"
+	"net/url"
+
 	"github.com/dukhyungkim/fn/api/datastore/sql/dbhelper"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
-	"net/url"
 )
 
 type postgresHelper int
@@ -24,15 +25,14 @@ func (postgresHelper) PreConnect(url *url.URL) (string, error) {
 
 func (postgresHelper) PostCreate(db *sqlx.DB) (*sqlx.DB, error) {
 	return db, nil
-
 }
+
 func (postgresHelper) CheckTableExists(tx *sqlx.Tx, table string) (bool, error) {
 	query := tx.Rebind(`SELECT count(*)
 	FROM information_schema.TABLES
-	WHERE TABLE_NAME = 'apps'
-`)
+	WHERE TABLE_NAME = ?`)
 
-	row := tx.QueryRow(query)
+	row := tx.QueryRow(query, table)
 
 	var count int
 	err := row.Scan(&count)
@@ -49,9 +49,9 @@ func (postgresHelper) String() string {
 }
 
 func (postgresHelper) IsDuplicateKeyError(err error) bool {
-	switch dbErr := err.(type) {
-	case *pq.Error:
-		if dbErr.Code == "23505" {
+	var dbErr *pq.Error
+	if errors.As(err, &dbErr) {
+		if dbErr.Code == ErrUniqueViolation {
 			return true
 		}
 	}

@@ -1,6 +1,7 @@
 package sqlite
 
 import (
+	"errors"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -60,9 +61,9 @@ func (sqliteHelper) String() string {
 }
 
 func (sqliteHelper) IsDuplicateKeyError(err error) bool {
-	sqliteErr, ok := err.(*sqlite.Error)
-	code := sqliteErr.Code()
-	if ok {
+	var dbErr *sqlite.Error
+	if errors.As(err, &dbErr) {
+		code := dbErr.Code()
 		if code == sqlite3.SQLITE_CONSTRAINT_UNIQUE || code == sqlite3.SQLITE_CONSTRAINT_PRIMARYKEY {
 			return true
 		}
