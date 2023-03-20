@@ -20,8 +20,6 @@ import (
 	"github.com/dukhyungkim/fn/api/models"
 	"github.com/dukhyungkim/fn/fnext"
 	"github.com/dukhyungkim/fn/grpcutil"
-	"github.com/golang/protobuf/ptypes/empty"
-	pbst "github.com/golang/protobuf/ptypes/struct"
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/plugin/ocgrpc"
 	"google.golang.org/grpc"
@@ -30,6 +28,8 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 /*
@@ -99,8 +99,7 @@ type callHandle struct {
 	eofSeen uint64 // Has pipe sender seen eof?
 }
 
-func NewCallHandle(engagement runner.RunnerProtocol_EngageServer) *callHandle {
-
+func newCallHandle(engagement runner.RunnerProtocol_EngageServer) *callHandle {
 	// set up a pipe to push data to agent Function container
 	pipeR, pipeW := io.Pipe()
 
@@ -621,6 +620,8 @@ type LogStreamer interface {
 // pureRunner implements Agent and delegates execution of functions to an internal Agent; basically it wraps around it
 // and provides the gRPC server that implements the LB <-> Runner protocol.
 type pureRunner struct {
+	runner.UnimplementedRunnerProtocolServer
+
 	gRPCServer     *grpc.Server
 	gRPCOptions    []grpc.ServerOption
 	creds          credentials.TransportCredentials
@@ -767,7 +768,7 @@ func (pr *pureRunner) Engage(engagement runner.RunnerProtocol_EngageServer) erro
 	if ok {
 		log.Debug("MD is ", md)
 	}
-	state := NewCallHandle(engagement)
+	state := newCallHandle(engagement)
 	defer state.scancel()
 
 	tryMsg := state.getTryMsg()
@@ -810,12 +811,12 @@ func (pr *pureRunner) Engage(engagement runner.RunnerProtocol_EngageServer) erro
 }
 
 // implements RunnerProtocolServer
-func (pr *pureRunner) Status(ctx context.Context, e *empty.Empty) (*runner.RunnerStatus, error) {
+func (pr *pureRunner) Status(ctx context.Context, e *emptypb.Empty) (*runner.RunnerStatus, error) {
 	return pr.status.Status(ctx, e)
 }
 
 // implements RunnerProtocolServer
-func (pr *pureRunner) Status2(ctx context.Context, r *pbst.Struct) (*runner.RunnerStatus, error) {
+func (pr *pureRunner) Status2(ctx context.Context, r *structpb.Struct) (*runner.RunnerStatus, error) {
 	return pr.status.Status2(ctx, r)
 }
 
@@ -837,7 +838,7 @@ func (pr *pureRunner) StreamLogs(logStream runner.RunnerProtocol_StreamLogsServe
 }
 
 // BeforeCall called before a function is executed
-func (pr *pureRunner) BeforeCall(ctx context.Context, call *models.Call) error {
+func (pr *pureRunner) BeforeCall(_ context.Context, call *models.Call) error {
 	if call.Type != models.TypeDetached {
 		return nil
 	}
@@ -855,7 +856,7 @@ func (pr *pureRunner) BeforeCall(ctx context.Context, call *models.Call) error {
 }
 
 // AfterCall called after a funcion is executed
-func (pr *pureRunner) AfterCall(ctx context.Context, call *models.Call) error {
+func (pr *pureRunner) AfterCall(_ context.Context, _ *models.Call) error {
 	return nil
 }
 
@@ -977,7 +978,7 @@ func PureRunnerWithDetached() PureRunnerOption {
 func NewPureRunner(cancel context.CancelFunc, addr string, options ...PureRunnerOption) (Agent, error) {
 
 	pr := &pureRunner{}
-	pr.status = NewStatusTracker()
+	pr.status = newStatusTracker()
 
 	for _, option := range options {
 		err := option(pr)

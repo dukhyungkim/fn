@@ -2,12 +2,13 @@ package agent
 
 import (
 	"context"
-	"github.com/golang/protobuf/ptypes/empty"
+	"sync/atomic"
+	"testing"
+
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"sync/atomic"
-	"testing"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // Functional behavior
@@ -35,11 +36,11 @@ func TestRunnerStatus_InvokesCustomFunction(t *testing.T) {
 		"fake-status-k": "fake-status-v",
 	}
 	agent := new(MockAgent)
-	ut := NewStatusTrackerWithAgent(agent)
+	ut := newStatusTrackerWithAgent(agent)
 	ut.customHealthCheckerFunc = func(_ context.Context) (map[string]string, error) {
 		return customReturnStatus, nil
 	}
-	status, err := ut.Status(context.TODO(), &empty.Empty{})
+	status, err := ut.Status(context.TODO(), &emptypb.Empty{})
 
 	assert.Nil(t, err, "unexpected error from Status")
 	assert.EqualValues(t, customReturnStatus, status.CustomStatus, "unexpected result from Status")
@@ -50,7 +51,7 @@ func TestRunnerStatus_InvokesCustomFunction(t *testing.T) {
 func TestRunnerStatus_ReturnsDefaultStatus(t *testing.T) {
 
 	agent := new(MockAgent)
-	ut := NewStatusTrackerWithAgent(agent)
+	ut := newStatusTrackerWithAgent(agent)
 
 	// Set up some fake stats
 	atomic.AddUint64(&ut.requestsReceived, 100)
@@ -58,7 +59,7 @@ func TestRunnerStatus_ReturnsDefaultStatus(t *testing.T) {
 	atomic.AddUint64(&ut.requestsHandled, 98)
 
 	// Get status
-	status, err := ut.Status(context.TODO(), &empty.Empty{})
+	status, err := ut.Status(context.TODO(), &emptypb.Empty{})
 
 	assert.Nil(t, err, "unexpected error from Status")
 	agent.AssertNotCalled(t, "Submit")
@@ -74,7 +75,7 @@ func TestRunnerStatus_CallsStatusImage(t *testing.T) {
 
 	const statusImageName = "fake-image-name"
 	agent := new(MockAgent)
-	ut := NewStatusTrackerWithAgent(agent)
+	ut := newStatusTrackerWithAgent(agent)
 
 	// Setup expectations
 	submitMatcher := func(c Call) bool {
@@ -85,7 +86,7 @@ func TestRunnerStatus_CallsStatusImage(t *testing.T) {
 
 	// Setup tracker and request status
 	ut.imageName = statusImageName
-	ut.Status(context.TODO(), &empty.Empty{})
+	ut.Status(context.TODO(), &emptypb.Empty{})
 
 	// Verify expectations met
 	agent.AssertExpectations(t)
@@ -96,7 +97,7 @@ func TestRunnerStatus_InvokesCustomFuncAndCallsStatusImage(t *testing.T) {
 
 	const statusImageName = "fake-image-name"
 	agent := new(MockAgent)
-	ut := NewStatusTrackerWithAgent(agent)
+	ut := newStatusTrackerWithAgent(agent)
 
 	// Setup expectations
 	submitMatcher := func(c Call) bool {
@@ -112,7 +113,7 @@ func TestRunnerStatus_InvokesCustomFuncAndCallsStatusImage(t *testing.T) {
 		called = true
 		return nil, nil
 	}
-	ut.Status(context.TODO(), &empty.Empty{})
+	ut.Status(context.TODO(), &emptypb.Empty{})
 
 	// Verify expectations met
 	agent.AssertExpectations(t)
@@ -123,7 +124,7 @@ func TestRunnerStatus_NoStatusImageCallWhenCheckerFails(t *testing.T) {
 
 	const statusImageName = "fake-image-name"
 	agent := new(MockAgent)
-	ut := NewStatusTrackerWithAgent(agent)
+	ut := newStatusTrackerWithAgent(agent)
 
 	called := false
 	// Setup tracker and request status
@@ -132,7 +133,7 @@ func TestRunnerStatus_NoStatusImageCallWhenCheckerFails(t *testing.T) {
 		called = true
 		return nil, errors.New("custom checker failed")
 	}
-	ut.Status(context.TODO(), &empty.Empty{})
+	ut.Status(context.TODO(), &emptypb.Empty{})
 
 	// Verify expectations met
 	assert.True(t, called, "customHealthChecker not invoked as expected")

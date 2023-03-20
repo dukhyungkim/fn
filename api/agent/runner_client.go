@@ -11,21 +11,19 @@ import (
 	"net/http"
 	"time"
 
+	pb "github.com/dukhyungkim/fn/api/agent/grpc"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/api/models"
+	pool "github.com/dukhyungkim/fn/api/runnerpool"
+	"github.com/dukhyungkim/fn/grpcutil"
+	"github.com/sirupsen/logrus"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-
-	pb "github.com/dukhyungkim/fn/api/agent/grpc"
-	"github.com/dukhyungkim/fn/api/common"
-	"github.com/dukhyungkim/fn/api/models"
-	pool "github.com/dukhyungkim/fn/api/runnerpool"
-	"github.com/dukhyungkim/fn/grpcutil"
-
-	pb_empty "github.com/golang/protobuf/ptypes/empty"
-	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 var (
@@ -170,7 +168,7 @@ func (r *gRPCRunner) Status(ctx context.Context) (*pool.RunnerStatus, error) {
 		ctx = metadata.NewOutgoingContext(ctx, mp)
 	}
 
-	status, err := r.client.Status(ctx, &pb_empty.Empty{})
+	status, err := r.client.Status(ctx, &emptypb.Empty{})
 	log.WithError(err).Debugf("Status Call %+v", status)
 	return TranslateGRPCStatusToRunnerStatus(status), err
 }
@@ -322,16 +320,6 @@ func tryQueueError(err error, done chan error) {
 	case done <- err:
 	default:
 	}
-}
-
-func translateDate(dt string) time.Time {
-	if dt != "" {
-		trx, err := common.ParseDateTime(dt)
-		if err == nil {
-			return time.Time(trx)
-		}
-	}
-	return time.Time{}
 }
 
 func recordFinishStats(ctx context.Context, msg *pb.CallFinished, c pool.RunnerCall) {

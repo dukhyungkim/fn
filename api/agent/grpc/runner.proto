@@ -1,8 +1,11 @@
 syntax = "proto3";
 
+package runner;
+
+option go_package = "./runner";
+
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
-
 
 
 // Request to allocate a slot for a call

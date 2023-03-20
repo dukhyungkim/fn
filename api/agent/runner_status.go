@@ -1,17 +1,9 @@
 package agent
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	runner "github.com/dukhyungkim/fn/api/agent/grpc"
-	"github.com/dukhyungkim/fn/api/common"
-	"github.com/dukhyungkim/fn/api/id"
-	"github.com/dukhyungkim/fn/api/models"
-	"github.com/golang/protobuf/jsonpb"
-	"github.com/golang/protobuf/ptypes/empty"
-	pbst "github.com/golang/protobuf/ptypes/struct"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -20,6 +12,14 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+
+	runner "github.com/dukhyungkim/fn/api/agent/grpc"
+	"github.com/dukhyungkim/fn/api/common"
+	"github.com/dukhyungkim/fn/api/id"
+	"github.com/dukhyungkim/fn/api/models"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 const v1StatusRequest = "{}"
@@ -48,11 +48,11 @@ type statusTracker struct {
 	wait   chan struct{}
 }
 
-func NewStatusTracker() *statusTracker {
+func newStatusTracker() *statusTracker {
 	return &statusTracker{}
 }
 
-func NewStatusTrackerWithAgent(a Agent) *statusTracker {
+func newStatusTrackerWithAgent(a Agent) *statusTracker {
 	st := &statusTracker{}
 	st.agent = a
 	return st
@@ -62,20 +62,17 @@ func (st *statusTracker) setAgent(a Agent) {
 	st.agent = a
 }
 
-func (st *statusTracker) Status(ctx context.Context, _ *empty.Empty) (*runner.RunnerStatus, error) {
+func (st *statusTracker) Status(ctx context.Context, _ *emptypb.Empty) (*runner.RunnerStatus, error) {
 	return st.statusV2(ctx, json.RawMessage(v1StatusRequest))
 }
 
-func (st *statusTracker) Status2(ctx context.Context, r *pbst.Struct) (*runner.RunnerStatus, error) {
-
-	b := bytes.Buffer{}
-	m := &jsonpb.Marshaler{}
-	err := m.Marshal(&b, r)
+func (st *statusTracker) Status2(ctx context.Context, r *structpb.Struct) (*runner.RunnerStatus, error) {
+	b, err := protojson.Marshal(r)
 	if err != nil {
 		common.Logger(ctx).WithError(err).Warnf("status call: failed to marshal request %v", err)
 		return nil, err
 	}
-	return st.statusV2(ctx, b.Bytes())
+	return st.statusV2(ctx, b)
 }
 
 func (st *statusTracker) statusV2(ctx context.Context, req json.RawMessage) (*runner.RunnerStatus, error) {
@@ -146,7 +143,7 @@ func (st *statusTracker) runStatusCall(ctx context.Context, req json.RawMessage)
 	log.Debugf("Running status call with id=%v image=%v", c.ID, c.Image)
 
 	recorder := httptest.NewRecorder()
-	player := ioutil.NopCloser(strings.NewReader(c.Payload))
+	player := io.NopCloser(strings.NewReader(c.Payload))
 
 	// Fetch network status
 	if st.barrierPath != "" {
@@ -226,7 +223,7 @@ func (st *statusTracker) runStatusCall(ctx context.Context, req json.RawMessage)
 
 	// Status images should not output excessive data since we echo the
 	// data back to caller.
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, _ := io.ReadAll(resp.Body)
 	resp.Body.Close()
 
 	result.Details = string(body)
@@ -288,7 +285,7 @@ func (st *statusTracker) fetchStatusCall(ctx context.Context) (*runner.RunnerSta
 	return &cacheObj, ctx.Err()
 }
 
-func (st *statusTracker) checkStatusCall(ctx context.Context) (chan struct{}, bool) {
+func (st *statusTracker) checkStatusCall(_ context.Context) (chan struct{}, bool) {
 	now := time.Now()
 
 	st.lock.Lock()

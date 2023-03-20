@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"net/url"
@@ -13,14 +12,17 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/structpb"
+
 	runner "github.com/dukhyungkim/fn/api/agent/grpc"
 	"google.golang.org/grpc"
 
 	"github.com/dukhyungkim/fn/api/id"
 	"github.com/dukhyungkim/fn/api/models"
 	"github.com/dukhyungkim/fn/api/runnerpool"
-	pb_empty "github.com/golang/protobuf/ptypes/empty"
-	pb_struct "github.com/golang/protobuf/ptypes/struct"
 )
 
 func callFN(ctx context.Context, u string, content io.Reader, output io.Writer, invokeType string) (*http.Response, error) {
@@ -284,12 +286,12 @@ func TestCustomHealthChecker(t *testing.T) {
 	defer cancel()
 
 	r := "127.0.0.1:9191"
-	conn, err := grpc.Dial(r, grpc.WithInsecure())
+	conn, err := grpc.Dial(r, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("Failed to dial into runner %s due to err=%+v", r, err)
 	}
 	client := runner.NewRunnerProtocolClient(conn)
-	status, err := client.Status(ctx, &pb_empty.Empty{})
+	status, err := client.Status(ctx, &emptypb.Empty{})
 	if err != nil {
 		t.Fatalf("Status check failed due to err=%+v", err)
 	}
@@ -310,7 +312,7 @@ func TestCustomHealthChecker(t *testing.T) {
 		shouldCustomHealthCheckerFail = false
 		time.Sleep(2 * time.Second)
 	}()
-	status, err = client.Status(ctx, &pb_empty.Empty{})
+	status, err = client.Status(ctx, &emptypb.Empty{})
 	if err != nil {
 		t.Fatalf("Status check failed due to err=%+v", err)
 	}
@@ -433,10 +435,10 @@ func TestStatus_verifyIO(t *testing.T) {
 		t.Fatalf("Failed to dial into runner %s due to err=%+v", r, err)
 	}
 	client := runner.NewRunnerProtocolClient(conn)
-	p := &pb_struct.Struct{
-		Fields: map[string]*pb_struct.Value{
-			"fake-member-1": {Kind: &pb_struct.Value_StringValue{StringValue: "fake-value-1"}},
-			"fake-member-2": {Kind: &pb_struct.Value_StringValue{StringValue: "fake-value-2"}},
+	p := &structpb.Struct{
+		Fields: map[string]*structpb.Value{
+			"fake-member-1": {Kind: &structpb.Value_StringValue{StringValue: "fake-value-1"}},
+			"fake-member-2": {Kind: &structpb.Value_StringValue{StringValue: "fake-value-2"}},
 		},
 	}
 
