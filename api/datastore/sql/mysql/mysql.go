@@ -10,6 +10,8 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const driverName = "mysql"
+
 type mysqlHelper int
 
 func (mysqlHelper) Supports(scheme string) bool {
@@ -42,7 +44,7 @@ func (mysqlHelper) CheckTableExists(tx *sqlx.Tx, table string) (bool, error) {
 }
 
 func (mysqlHelper) String() string {
-	return "mysql"
+	return driverName
 }
 
 func (mysqlHelper) IsDuplicateKeyError(err error) bool {
@@ -56,5 +58,5 @@ func (mysqlHelper) IsDuplicateKeyError(err error) bool {
 }
 
 func init() {
-	dbhelper.Register(mysqlHelper(0))
+	dbhelper.Register(driverName, mysqlHelper(0))
 }

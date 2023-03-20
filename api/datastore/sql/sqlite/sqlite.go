@@ -13,6 +13,8 @@ import (
 	sqlite3 "modernc.org/sqlite/lib"
 )
 
+const driverName = "sqlite"
+
 type sqliteHelper int
 
 func (sqliteHelper) Supports(scheme string) bool {
@@ -57,7 +59,7 @@ func (sqliteHelper) CheckTableExists(tx *sqlx.Tx, table string) (bool, error) {
 }
 
 func (sqliteHelper) String() string {
-	return "sqlite"
+	return driverName
 }
 
 func (sqliteHelper) IsDuplicateKeyError(err error) bool {
@@ -72,5 +74,5 @@ func (sqliteHelper) IsDuplicateKeyError(err error) bool {
 }
 
 func init() {
-	dbhelper.Register(sqliteHelper(0))
+	dbhelper.Register(driverName, sqliteHelper(0))
 }

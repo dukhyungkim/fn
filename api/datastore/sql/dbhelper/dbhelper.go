@@ -3,16 +3,17 @@ package dbhelper
 
 import (
 	"fmt"
+	"net/url"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
-	"net/url"
 )
 
-var sqlHelpers []Helper
+var sqlHelpers = make(map[string]Helper)
 
 // Register registers a new SQL helper
-func Register(helper Helper) {
-	sqlHelpers = append(sqlHelpers, helper)
+func Register(driverName string, helper Helper) {
+	sqlHelpers[driverName] = helper
 }
 
 // Helper provides DB-specific SQL capabilities
@@ -32,11 +33,10 @@ type Helper interface {
 
 // GetHelper returns a helper for a specific driver
 func GetHelper(driverName string) (Helper, bool) {
-	for _, helper := range sqlHelpers {
-		if helper.Supports(driverName) {
-			return helper, true
-		}
+	helper, ok := sqlHelpers[driverName]
+	if !ok {
 		logrus.Debugf("%s does not support %s", helper, driverName)
+		return nil, false
 	}
-	return nil, false
+	return helper, true
 }

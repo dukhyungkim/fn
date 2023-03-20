@@ -9,6 +9,8 @@ import (
 	"github.com/lib/pq"
 )
 
+const driverName = "postgres"
+
 type postgresHelper int
 
 func (postgresHelper) Supports(scheme string) bool {
@@ -45,7 +47,7 @@ func (postgresHelper) CheckTableExists(tx *sqlx.Tx, table string) (bool, error) 
 }
 
 func (postgresHelper) String() string {
-	return "postgres"
+	return driverName
 }
 
 func (postgresHelper) IsDuplicateKeyError(err error) bool {
@@ -59,5 +61,5 @@ func (postgresHelper) IsDuplicateKeyError(err error) bool {
 }
 
 func init() {
-	dbhelper.Register(postgresHelper(0))
+	dbhelper.Register(driverName, postgresHelper(0))
 }
