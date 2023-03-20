@@ -9,7 +9,7 @@ require (
 	github.com/fnproject/fdk-go v0.0.0-20181025170718-26ed643bea68
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/fsouza/go-dockerclient v1.4.0
-	github.com/gin-contrib/cors v0.0.0-20170318125340-cf4846e6a636
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang/groupcache v0.0.0-20180924190550-6f2cf27854a4
@@ -84,7 +84,7 @@ require (
 	google.golang.org/api v0.3.2 // indirect
 	google.golang.org/genproto v0.0.0-20190425155659-357c62f0e4bb // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
-	gopkg.in/yaml.v2 v2.2.2 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/uint128 v1.2.0 // indirect
 	modernc.org/cc/v3 v3.40.0 // indirect
