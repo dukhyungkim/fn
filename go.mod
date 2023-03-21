@@ -8,7 +8,7 @@ require (
 	contrib.go.opencensus.io/exporter/zipkin v0.1.2
 	github.com/coreos/go-semver v0.2.1-0.20180108230905-e214231b295a
 	github.com/dchest/siphash v1.2.0
-	github.com/fnproject/fdk-go v0.0.0-20181025170718-26ed643bea68
+	github.com/fnproject/fdk-go v0.0.29
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/fsouza/go-dockerclient v1.4.0
 	github.com/gin-contrib/cors v1.4.0
