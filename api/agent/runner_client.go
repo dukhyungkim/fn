@@ -19,6 +19,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/backoff"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
@@ -82,7 +83,7 @@ func runnerConnection(address string, tlsConf *tls.Config, timeout time.Duration
 	}
 
 	// we want to set a very short timeout to fail-fast if something goes wrong
-	conn, err := grpcutil.DialWithBackoff(ctx, address, creds, timeout, grpc.DefaultBackoffConfig, dialOpts...)
+	conn, err := grpcutil.DialWithBackoff(ctx, address, creds, timeout, backoff.DefaultConfig, dialOpts...)
 	if err != nil {
 		logger.WithError(err).Error("Unable to connect to runner node")
 	}

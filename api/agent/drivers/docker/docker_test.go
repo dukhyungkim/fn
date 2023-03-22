@@ -537,7 +537,11 @@ func TestRunnerDockerNoNetwork(t *testing.T) {
 
 	client := newTestClient(ctx)
 
-	c, err := client.InspectContainerWithContext(task.Id(), ctx)
+	opts := docker.InspectContainerOptions{
+		Context: ctx,
+		ID:      task.Id(),
+	}
+	c, err := client.InspectContainerWithOptions(opts)
 	if err != nil {
 		t.Fatalf("Couldn't inspect container test %v", err)
 	}

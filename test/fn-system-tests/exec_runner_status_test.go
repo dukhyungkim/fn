@@ -332,7 +332,7 @@ func TestConfigureRunner(t *testing.T) {
 	defer cancel()
 
 	r := "127.0.0.1:9193"
-	conn, err := grpc.Dial(r, grpc.WithInsecure())
+	conn, err := grpc.Dial(r, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("Failed to dial into runner %s due to err=%+v", r, err)
 	}
@@ -365,7 +365,7 @@ func TestExampleLogStreamer(t *testing.T) {
 	defer cancel()
 
 	r := "127.0.0.1:9193"
-	conn, err := grpc.Dial(r, grpc.WithInsecure())
+	conn, err := grpc.Dial(r, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("Failed to dial into runner %s due to err=%+v", r, err)
 	}
@@ -430,7 +430,7 @@ func TestStatus_verifyIO(t *testing.T) {
 
 	// Connect to the first node
 	r := runnerGrpcServerAddr(0)
-	conn, err := grpc.Dial(r, grpc.WithInsecure())
+	conn, err := grpc.Dial(r, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("Failed to dial into runner %s due to err=%+v", r, err)
 	}

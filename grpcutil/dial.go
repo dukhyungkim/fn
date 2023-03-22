@@ -9,24 +9,26 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/backoff"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 )
 
 // DialWithBackoff creates a grpc connection using backoff strategy for reconnections
-func DialWithBackoff(ctx context.Context, address string, creds credentials.TransportCredentials, timeout time.Duration, backoffCfg grpc.BackoffConfig, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
-	opts = append(opts, grpc.WithBackoffConfig(backoffCfg))
+func DialWithBackoff(ctx context.Context, address string, creds credentials.TransportCredentials, timeout time.Duration, backoffCfg backoff.Config, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
+	opts = append(opts, grpc.WithConnectParams(grpc.ConnectParams{
+		Backoff: backoffCfg,
+	}))
 	return dial(ctx, address, creds, timeout, opts...)
 }
 
 // uses grpc connection backoff protocol https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md
 func dial(ctx context.Context, address string, creds credentials.TransportCredentials, timeoutDialer time.Duration, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
-	dialer := func(address string, timeout time.Duration) (net.Conn, error) {
+	dialer := func(ctx context.Context, address string) (net.Conn, error) {
 		log := common.Logger(ctx).WithField("grpc_addr", address)
 
-		ctx, cancel := context.WithTimeout(ctx, timeout)
-		defer cancel()
-		conn, err := (&net.Dialer{Cancel: ctx.Done(), Timeout: timeoutDialer}).Dial("tcp", address)
+		conn, err := net.DialTimeout("tcp", address, timeoutDialer)
 		if err != nil {
 			log.WithError(err).Debug("Failed to dial grpc connection")
 			return nil, err
@@ -45,8 +47,8 @@ func dial(ctx context.Context, address string, creds credentials.TransportCreden
 	}
 
 	opts = append(opts,
-		grpc.WithDialer(dialer),
-		grpc.WithInsecure(), // we are handling TLS, so tell grpc not to
+		grpc.WithContextDialer(dialer),
+		grpc.WithTransportCredentials(insecure.NewCredentials()), // we are handling TLS, so tell grpc not to
 	)
 	return grpc.DialContext(ctx, address, opts...)
 
