@@ -74,13 +74,13 @@ const (
 	EnvHotPoll = "FN_HOT_POLL_MSECS"
 	// EnvHotLauncherTimeout is the timeout for a hot container queue to persist if idle
 	EnvHotLauncherTimeout = "FN_HOT_LAUNCHER_TIMEOUT_MSECS"
-	// EnvHotStartTimeout is the timeout for a hot container to be created including docker-pull
+	// EnvHotPullTimeout is the timeout for a hot container to be created including docker-pull
 	EnvHotPullTimeout = "FN_HOT_PULL_TIMEOUT_MSECS"
 	// EnvHotStartTimeout is the timeout for a hot container to become available for use for requests after EnvHotStartTimeout
 	EnvHotStartTimeout = "FN_HOT_START_TIMEOUT_MSECS"
 	// EnvMaxResponseSize is the maximum number of bytes that a function may return from an invocation
 	EnvMaxResponseSize = "FN_MAX_RESPONSE_SIZE"
-	// EnvHdrMaxResponseSize is the maximum number of bytes that a function may return in an invocation header
+	// EnvMaxHdrResponseSize is the maximum number of bytes that a function may return in an invocation header
 	EnvMaxHdrResponseSize = "FN_MAX_HDR_RESPONSE_SIZE"
 	// EnvMaxLogSize is the maximum size that a function's log may reach
 	EnvMaxLogSize = "FN_MAX_LOG_SIZE_BYTES"
