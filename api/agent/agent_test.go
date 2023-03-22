@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"net"
 	"net/http"
@@ -308,7 +307,7 @@ func TestLoggerTooBig(t *testing.T) {
 	var call models.Call
 	logger := setupLogger(context.Background(), 10, true, &call)
 
-	str := fmt.Sprintf("0 line\n1 l\n-----max log size 10 bytes exceeded, truncating log-----\n")
+	const str = "0 line\n1 l\n-----max log size 10 bytes exceeded, truncating log-----\n"
 
 	n, err := logger.Write([]byte(str))
 	if err != nil {
@@ -526,7 +525,6 @@ func TestDockerPullUnAuthorizedRepo(t *testing.T) {
 			return
 		}
 		w.WriteHeader(401)
-		return
 	}))
 	defer garbageServer.Close()
 
@@ -1313,7 +1311,7 @@ func TestDockerAuthExtn(t *testing.T) {
 }
 
 func TestCheckSocketDestination(t *testing.T) {
-	tmpDir, err := ioutil.TempDir(os.TempDir(), "testSocketPerms")
+	tmpDir, err := os.MkdirTemp(os.TempDir(), "testSocketPerms")
 	if err != nil {
 		t.Fatal("failed to create temp tmpDir", err)
 	}
@@ -1332,7 +1330,7 @@ func TestCheckSocketDestination(t *testing.T) {
 	}
 	notASocket := filepath.Join(tmpDir, "notasock.sock")
 
-	err = ioutil.WriteFile(notASocket, []byte{0}, 0666)
+	err = os.WriteFile(notASocket, []byte{0}, 0666)
 	if err != nil {
 		t.Fatalf("Failed to create empty sock")
 	}

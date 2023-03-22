@@ -22,7 +22,8 @@ import (
 	"contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/gin-gonic/gin"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
-	promclient "github.com/prometheus/client_golang/prometheus"
+	promClient "github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/sirupsen/logrus"
 	"go.opencensus.io/plugin/ochttp"
 	"go.opencensus.io/stats/view"
@@ -605,18 +606,18 @@ func New(ctx context.Context, opts ...Option) *Server {
 // WithPrometheus activates the prometheus collection and /metrics endpoint
 func WithPrometheus() Option {
 	return func(ctx context.Context, s *Server) error {
-		reg := promclient.NewRegistry()
-		reg.MustRegister(promclient.NewProcessCollector(promclient.ProcessCollectorOpts{
+		reg := promClient.NewRegistry()
+		reg.MustRegister(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{
 			PidFn:     func() (int, error) { return os.Getpid(), nil },
 			Namespace: "fn",
 		}),
-			promclient.NewGoCollector(),
+			collectors.NewGoCollector(),
 		)
 
 		for _, exeName := range getMonitoredCmdNames() {
 			san := promSanitizeMetricName(exeName)
 
-			err := reg.Register(promclient.NewProcessCollector(promclient.ProcessCollectorOpts{
+			err := reg.Register(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{
 				PidFn:     getPidCmd(exeName),
 				Namespace: san,
 			}))

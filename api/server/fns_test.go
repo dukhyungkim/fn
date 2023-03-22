@@ -412,7 +412,7 @@ func TestFnInvokeEndpointAnnotations(t *testing.T) {
 	var resp models.FnList
 	err = json.NewDecoder(rec.Body).Decode(&resp)
 	if err != nil {
-		t.Fatalf("Invalid json from server %s : %s", err, string(rec.Body.Bytes()))
+		t.Fatalf("Invalid json from server %s : %s", err, rec.Body.String())
 	}
 
 	if len(resp.Items) != 1 {

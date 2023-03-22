@@ -98,7 +98,7 @@ func TestImagePullConcurrent2(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			err := <-puller.PullImage(ctx, &cfg, img, repo, tag)
-			if err == nil || strings.Index(err.Error(), "yogurt") == -1 {
+			if err == nil || strings.Contains(err.Error(), "yogurt") {
 				t.Fatalf("Unknown err received %v", err)
 			}
 		}()
@@ -135,7 +135,7 @@ func TestImagePullConcurrent3(t *testing.T) {
 	}
 
 	checker := func(err error) (bool, string) {
-		return err != nil && strings.Index(err.Error(), "yogurt") != -1, ""
+		return err != nil && strings.Contains(err.Error(), "yogurt"), ""
 	}
 
 	err := puller.SetRetryPolicy(bcfg, checker)

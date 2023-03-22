@@ -82,7 +82,6 @@ func ParseDateTime(data string) (DateTime, error) {
 			lastError = err
 			continue
 		}
-		lastError = nil
 		return DateTime(dd), nil
 	}
 	return DateTime{}, lastError

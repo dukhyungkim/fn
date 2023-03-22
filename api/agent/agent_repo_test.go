@@ -158,7 +158,6 @@ func getFakeDocker(t *testing.T) (*httptest.Server, func()) {
 
 		logStatus(r, 500)
 		w.WriteHeader(500)
-		return
 	}))
 
 	return srv, func() {
@@ -180,7 +179,7 @@ func TestDockerPullRetries(t *testing.T) {
 	defer checkClose(t, a)
 
 	checker := func(err error) (bool, string) {
-		if err != nil && strings.Index(err.Error(), "toomanyrequests: ") != -1 {
+		if err != nil && strings.Contains(err.Error(), "toomanyrequests: ") {
 			return true, "toomanyrequests"
 		}
 		return false, ""
@@ -202,7 +201,7 @@ func TestDockerPullRetries(t *testing.T) {
 	fn.Image = strings.TrimPrefix(dockerSrv.URL, "https://") + "/foo/bar:latest"
 
 	err = execFn(`{"sleepTime": 0}`, fn, getApp(), a, 400000)
-	if err == nil || strings.Index(err.Error(), "filesystem layer verification failed") == -1 {
+	if err == nil || strings.Contains(err.Error(), "filesystem layer verification failed") {
 		t.Fatalf("unexpected error %v", err)
 	}
 }
@@ -240,7 +239,7 @@ func TestDockerPullNoRetry(t *testing.T) {
 	fn.Image = strings.TrimPrefix(dockerSrv.URL, "https://") + "/foo/bar:latest"
 
 	err = execFn(`{"sleepTime": 0}`, fn, getApp(), a, 400000)
-	if err == nil || strings.Index(err.Error(), "toomanyrequests: garbanzo beans have reached the sky") == -1 {
+	if err == nil || strings.Contains(err.Error(), "toomanyrequests: garbanzo beans have reached the sky") {
 		t.Fatalf("unexpected error %v", err)
 	}
 }

@@ -11,7 +11,9 @@ import (
 
 // Annotations encapsulates key-value metadata associated with resource. The structure is immutable via its public API and nil-safe for its contract
 // permissive nilability is here to simplify updates and reduce the need for nil handling in extensions - annotations should be updated by over-writing the original object:
-//  target.Annotations  = target.Annotations.With("fooKey",1)
+//
+//	target.Annotations  = target.Annotations.With("fooKey",1)
+//
 // old MD remains empty
 // Annotations is lenable
 type Annotations map[string]*annotationValue
@@ -37,7 +39,7 @@ func (m Annotations) Equals(other Annotations) bool {
 
 func (m Annotations) Subset(other Annotations) bool {
 	for k1, v1 := range m {
-		v2, _ := other[k1]
+		v2 := other[k1]
 		if v2 == nil {
 			return false
 		}

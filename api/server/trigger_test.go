@@ -372,7 +372,7 @@ func TestHTTPTriggerEndpointAnnotations(t *testing.T) {
 	var triggerList models.TriggerList
 	err = json.NewDecoder(rec.Body).Decode(&triggerList)
 	if err != nil {
-		t.Fatalf("Invalid json from server %s : %s", err, string(rec.Body.Bytes()))
+		t.Fatalf("Invalid json from server %s : %s", err, rec.Body.String())
 	}
 
 	if len(triggerList.Items) != 1 {

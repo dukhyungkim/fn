@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -101,7 +100,7 @@ type AppResponse struct {
 }
 
 func init() {
-	Leaks = make([]*[]byte, 0, 0)
+	Leaks = make([]*[]byte, 0)
 }
 
 func getTotalLeaks() int {
@@ -388,7 +387,7 @@ func getChunk(size int) []byte {
 
 func readFile(name string, size int) (string, error) {
 	// read the whole file into memory
-	out, err := ioutil.ReadFile(filepath.Clean(name))
+	out, err := os.ReadFile(filepath.Clean(name))
 	if err != nil {
 		return "", err
 	}
@@ -458,7 +457,7 @@ func getDockerInfo() dockerInfo {
 
 			tokens := bytes.Split(line, []byte("/"))
 			tokLen := len(tokens)
-			if tokLen >= 3 && bytes.Compare(tokens[tokLen-2], []byte("docker")) == 0 {
+			if tokLen >= 3 && bytes.Equal(tokens[tokLen-2], []byte("docker")) {
 				info.ID = string(tokens[tokLen-1])
 				break
 			}

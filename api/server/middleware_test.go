@@ -3,7 +3,7 @@ package server
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -35,8 +35,7 @@ func (m *middleWareStruct) Handle(next http.Handler) http.Handler {
 }
 
 func TestMiddlewareChaining(t *testing.T) {
-	var lastHandler http.Handler
-	lastHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	lastHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("last"))
 	})
 
@@ -55,7 +54,7 @@ func TestMiddlewareChaining(t *testing.T) {
 
 	chainAndServe(s.apiMiddlewares, rec, req, lastHandler)
 
-	result, err := ioutil.ReadAll(rec.Result().Body)
+	result, err := io.ReadAll(rec.Result().Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -110,8 +109,8 @@ func TestRootMiddleware(t *testing.T) {
 	srv.AddRootMiddlewareFunc(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			t.Log("body reader log")
-			bodyBytes, _ := ioutil.ReadAll(r.Body)
-			r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+			bodyBytes, _ := io.ReadAll(r.Body)
+			r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 			next.ServeHTTP(w, r)
 		})
 	})
@@ -141,7 +140,7 @@ func TestRootMiddleware(t *testing.T) {
 			_, rec := routerRequest2(t, srv.Router, req)
 			// t.Log("REC: %+v\n", rec)
 
-			result, err := ioutil.ReadAll(rec.Result().Body)
+			result, err := io.ReadAll(rec.Result().Body)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -162,7 +161,7 @@ func TestRootMiddleware(t *testing.T) {
 	t.Log("TESTING: Create myapp3 when a middleware reads the body")
 	_, rec := routerRequest2(t, srv.Router, req)
 
-	res, _ := ioutil.ReadAll(rec.Result().Body)
+	res, _ := io.ReadAll(rec.Result().Body)
 	if !strings.Contains(string(res), "myapp3") {
 		t.Fatal("Middleware did not pass the request correctly to route handler")
 	}

@@ -1,9 +1,7 @@
 package server
 
 import (
-	"bytes"
 	"context"
-	"io/ioutil"
 	"net"
 	"os"
 	"os/signal"
@@ -59,7 +57,7 @@ func whoAmI() net.IP {
 		for _, a := range addrs {
 			ip, _, err := net.ParseCIDR(a.String())
 			if a.Network() == "ip+net" && err == nil && ip.To4() != nil {
-				if !bytes.Equal(ip, net.ParseIP("127.0.0.1")) {
+				if !ip.Equal(net.ParseIP("127.0.0.1")) {
 					return ip
 				}
 			}
@@ -72,7 +70,7 @@ func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	} else if value, ok := os.LookupEnv(key + "_FILE"); ok {
-		dat, err := ioutil.ReadFile(filepath.Clean(value))
+		dat, err := os.ReadFile(filepath.Clean(value))
 		if err == nil {
 			return string(dat)
 		}
@@ -90,7 +88,7 @@ func getEnvInt(key string, fallback int) int {
 		}
 		return i
 	} else if value, ok := os.LookupEnv(key + "_FILE"); ok {
-		dat, err := ioutil.ReadFile(filepath.Clean(value))
+		dat, err := os.ReadFile(filepath.Clean(value))
 		if err == nil {
 			var err error
 			var i int

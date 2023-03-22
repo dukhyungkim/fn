@@ -5,7 +5,6 @@ import (
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -294,11 +293,11 @@ func (a *lbAgent) setRequestBody(ctx context.Context, call *call) (*bytes.Buffer
 			return
 		}
 
-		r.Body = ioutil.NopCloser(bytes.NewReader(buf.Bytes()))
+		r.Body = io.NopCloser(bytes.NewReader(buf.Bytes()))
 
 		// GetBody does not mutate the state of the request body
 		r.GetBody = func() (io.ReadCloser, error) {
-			return ioutil.NopCloser(bytes.NewReader(buf.Bytes())), nil
+			return io.NopCloser(bytes.NewReader(buf.Bytes())), nil
 		}
 
 		close(errApp)
@@ -374,9 +373,9 @@ func recordCallLatency(ctx context.Context, call *call, status string) {
 	var callLatency time.Duration
 
 	if !start.IsZero() {
-		callLatency = time.Now().Sub(start)
+		callLatency = time.Since(start)
 	} else if !creat.IsZero() {
-		callLatency = time.Now().Sub(creat)
+		callLatency = time.Since(creat)
 	} else {
 		common.Logger(ctx).Error("cannot determine call start time")
 		return
