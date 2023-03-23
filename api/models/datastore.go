@@ -58,7 +58,7 @@ type Datastore interface {
 	//UpdateTrigger updates a trigger object in the data store
 	UpdateTrigger(ctx context.Context, trigger *Trigger) (*Trigger, error)
 
-	// Removes a Trigger. Returns field specific errors if they are empty.
+	// RemoveTrigger Removes a Trigger. Returns field specific errors if they are empty.
 	// Returns nil if successful
 	RemoveTrigger(ctx context.Context, triggerID string) error
 
@@ -73,6 +73,6 @@ type Datastore interface {
 	// GetTriggerBySource loads a trigger by type and source ID - this is only needed when the data store is also used for agent read access
 	GetTriggerBySource(ctx context.Context, appId string, triggerType, source string) (*Trigger, error)
 
-	// implements io.Closer to shutdown
+	// Closer implements io.Closer to shut down
 	io.Closer
 }

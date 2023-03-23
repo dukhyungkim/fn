@@ -12,7 +12,7 @@ import (
 	"github.com/dukhyungkim/fn/api/models"
 )
 
-// A DriverCookie identifies a unique request to run a task.
+// Cookie A DriverCookie identifies a unique request to run a task.
 //
 // Clients should always call Close() on a DriverCookie after they are done
 // with it.
@@ -38,18 +38,18 @@ type Cookie interface {
 	// Unfreeze a frozen container to unpause frozen processes
 	Unfreeze(ctx context.Context) error
 
-	// Validate/Inspect image. Returns true if the image needs
+	// ValidateImage Validate/Inspect image. Returns true if the image needs
 	// to be pulled and non-nil error if validation/inspection fails.
 	ValidateImage(ctx context.Context) (bool, error)
 
-	// Pull the image. An image pull requires validation/inspection
+	// PullImage Pull the image. An image pull requires validation/inspection
 	// again.
 	PullImage(ctx context.Context) error
 
-	// Create container which can be Run() later
+	// CreateContainer Create container which can be Run() later
 	CreateContainer(ctx context.Context) error
 
-	// Fetch driver specific container configuration. Use this to
+	// ContainerOptions Fetch driver specific container configuration. Use this to
 	// access the container create options. If Driver.Prepare() is not
 	// yet called with the cookie, then this can be used to modify container
 	// create options.
@@ -64,22 +64,22 @@ type WaitResult interface {
 	Wait(context.Context) RunResult
 }
 
-// Check if the provided error is retriable. Returns true and a tag reason if the error is retriable.
+// RetryErrorChecker Check if the provided error is retriable. Returns true and a tag reason if the error is retriable.
 type RetryErrorChecker func(error) (bool, string)
 
 type Driver interface {
-	// Create a new cookie with defaults and/or settings from container task.
+	// CreateCookie Create a new cookie with defaults and/or settings from container task.
 	// Callers should Close the cookie regardless of whether they prepare or run it.
 	CreateCookie(ctx context.Context, task ContainerTask) (Cookie, error)
 
-	// Set image pull retry policy and retriable error checker
+	// SetPullImageRetryPolicy Set image pull retry policy and retriable error checker
 	SetPullImageRetryPolicy(policy common.BackOffConfig, checker RetryErrorChecker) error
 
-	// Get serialized string of fields in call extn that determines if we can use
+	// GetSlotKeyExtensions Get serialized string of fields in call extn that determines if we can use
 	// an existing hot container slot or pull a new image and start a container
 	GetSlotKeyExtensions(extn map[string]string) string
 
-	// close & shutdown the driver
+	// Close close & shutdown the driver
 	Close() error
 }
 
@@ -94,13 +94,13 @@ type RunResult interface {
 	Status() string
 }
 
-// Logger Tags for container
+// LoggerTag Logger Tags for container
 type LoggerTag struct {
 	Name  string
 	Value string
 }
 
-// Logger Configuration for container
+// LoggerConfig Logger Configuration for container
 type LoggerConfig struct {
 	// Log Sink URL
 	URL string
@@ -121,13 +121,13 @@ type ContainerTask interface {
 	// Input feeds the container with data
 	Input() io.Reader
 
-	// The id to assign the container
+	// Id The id to assign the container
 	Id() string
 
 	// Image returns the runtime specific image to run.
 	Image() string
 
-	// Driver will write output log from task execution to these writers. Must be
+	// Logger will write output log from task execution to these writers. Must be
 	// non-nil. Use io.Discard if log is irrelevant.
 	Logger() (stdout, stderr io.Writer)
 
@@ -146,7 +146,7 @@ type ContainerTask interface {
 	// CPUs in milli CPU units
 	CPUs() uint64
 
-	// Filesystem size limit for the container, in megabytes.
+	// FsSize Filesystem size limit for the container, in megabytes.
 	FsSize() uint64
 
 	// PIDs defines the max number of PIDs allowed for the container to use. 0
@@ -170,21 +170,21 @@ type ContainerTask interface {
 	// POSIX message queues. Return nil for the default value from the host.
 	MessageQueue() *uint64
 
-	// Tmpfs Filesystem size limit for the container, in megabytes.
+	// TmpFsSize Tmpfs Filesystem size limit for the container, in megabytes.
 	TmpFsSize() uint64
 
 	// WorkDir returns the working directory to use for the task. Empty string
 	// leaves it unset.
 	WorkDir() string
 
-	// Logger Config to use in driver
+	// LoggerConfig Logger Config to use in driver
 	LoggerConfig() LoggerConfig
 
 	// Close is used to perform cleanup after task execution.
 	// Close should be safe to call multiple times.
 	Close()
 
-	// AddCloseWrapper is used to add additional cleanup to a task.
+	// WrapClose AddCloseWrapper is used to add additional cleanup to a task.
 	// The original close operation is passed to the wrapping factory.
 	// Implementation need not be thread-safe.
 	WrapClose(func(closer func()) func())
@@ -203,10 +203,10 @@ type ContainerTask interface {
 	UDSDockerPath() string
 
 	// UDSDockerDest is the destination mount point for uds path. it is the path
-	// of the directory where the sock file resides inside of the container.
+	// of the directory where the sock file resides inside the container.
 	UDSDockerDest() string
 
-	// Returns true if network is disabled.
+	// DisableNet Returns true if network is disabled.
 	DisableNet() bool
 
 	// BeforeCall is invoked just prior to running an invocation.
@@ -215,7 +215,7 @@ type ContainerTask interface {
 	BeforeCall(context.Context, *models.Call, CallExtensions) error
 
 	// WrapBeforeCall can add additional pre-call behaviour to be added.
-	// This should be called once per ContainerTaskand applies to all successive calls
+	// This should be called once per ContainerTask and applies to all successive calls
 	// that utilise this task
 	WrapBeforeCall(func(BeforeCall) BeforeCall)
 
@@ -223,7 +223,7 @@ type ContainerTask interface {
 	// providing that BeforeCall returned without an error
 	AfterCall(context.Context, *models.Call, CallExtensions) error
 
-	// WrapBeforeCall can add additional post-call behaviour to be added.
+	// WrapAfterCall can add additional post-call behaviour to be added.
 	// This should be called once per ContainerTask and applies to all successive calls
 	// that utilise this task
 	WrapAfterCall(func(AfterCall) AfterCall)

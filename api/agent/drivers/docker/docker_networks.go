@@ -27,7 +27,7 @@ func NewDockerNetworks(conf drivers.Config) *DockerNetworks {
 	return obj
 }
 
-// pick least used network
+// AllocNetwork pick the least used network
 func (n *DockerNetworks) AllocNetwork() string {
 	if len(n.networks) == 0 {
 		return ""
@@ -49,7 +49,7 @@ func (n *DockerNetworks) AllocNetwork() string {
 	return id
 }
 
-// unregister network
+// FreeNetwork unregister network
 func (n *DockerNetworks) FreeNetwork(id string) {
 	n.networksLock.Lock()
 	if count, ok := n.networks[id]; ok {

@@ -164,7 +164,7 @@ func killLeakedContainers(ctx context.Context, driver *DockerDriver) {
 		return
 	}
 
-	const containerListTimeout = time.Duration(60 * time.Second)
+	const containerListTimeout = 60 * time.Second
 
 	ctx, log := common.LoggerWithFields(ctx, logrus.Fields{"stack": "killLeakedContainers"})
 	limiter := rate.NewLimiter(2.0, 1)
@@ -178,7 +178,7 @@ func killLeakedContainers(ctx context.Context, driver *DockerDriver) {
 		containers, err = driver.docker.ListContainers(docker.ListContainersOptions{
 			All: true, // let's include containers that are not running, but not destroyed
 			Filters: map[string][]string{
-				"label": []string{filter},
+				"label": {filter},
 			},
 			Context: ctx,
 		})
@@ -516,7 +516,7 @@ type waitResult struct {
 	done      chan struct{}
 }
 
-// waitResult implements drivers.WaitResult
+// Wait waitResult implements drivers.WaitResult
 func (w *waitResult) Wait(ctx context.Context) drivers.RunResult {
 	defer close(w.done)
 

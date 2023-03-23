@@ -70,7 +70,7 @@ type Agent interface {
 	// or the call times out).
 	Submit(Call) error
 
-	// Close will wait for any outstanding calls to complete and then exit.
+	// Closer will wait for any outstanding calls to complete and then exit.
 	// Closing the agent will invoke Close on the underlying DataAccess.
 	// Close is not safe to be called from multiple threads.
 	io.Closer
@@ -1262,7 +1262,7 @@ func newHotContainer(ctx context.Context, evictor Evictor, caller *slotCaller, c
 		memory:         call.Memory,
 		cpus:           uint64(call.CPUs),
 		fsSize:         cfg.MaxFsSize,
-		pids:           uint64(cfg.MaxPIDs),
+		pids:           cfg.MaxPIDs,
 		openFiles:      cfg.MaxOpenFiles,
 		lockedMemory:   cfg.MaxLockedMemory,
 		pendingSignals: cfg.MaxPendingSignals,
@@ -1318,7 +1318,7 @@ func (noopOCHTTPFormat) SpanContextFromRequest(req *http.Request) (sc trace.Span
 func (noopOCHTTPFormat) SpanContextToRequest(sc trace.SpanContext, req *http.Request) {}
 
 func (c *container) swap(stderr io.Writer, cs *driver_stats.Stats) func() {
-	// if they aren't using a ghost writer, the logs are disabled, we can skip swapping
+	// if they aren't using a ghostwriter, the logs are disabled, we can skip swapping
 	gw, ok := c.stderr.(common.GhostWriter)
 	var ostderr io.Writer
 	if ok {
@@ -1440,7 +1440,7 @@ func (c *container) AfterCall(ctx context.Context, call *models.Call, extn drive
 	return c.afterCall(ctx, call, extn)
 }
 
-// WrapClose adds additional behaviour to the ContainerTask Close() call
+// WrapAfterCall adds additional behaviour to the ContainerTask Close() call
 func (c *container) WrapAfterCall(wrapper func(after drivers.AfterCall) drivers.AfterCall) {
 	c.afterCall = wrapper(c.afterCall)
 }

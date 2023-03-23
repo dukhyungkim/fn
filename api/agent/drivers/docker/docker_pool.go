@@ -97,17 +97,17 @@ type DockerPoolStats struct {
 }
 
 type DockerPool interface {
-	// fetch a pre-allocated free id from the pool
+	// AllocPoolId fetch a pre-allocated free id from the pool
 	// may return too busy error.
 	AllocPoolId() (string, error)
 
-	// Release the id back to the pool
+	// FreePoolId Release the id back to the pool
 	FreePoolId(id string)
 
-	// stop and terminate the pool
+	// Close stop and terminate the pool
 	Close() error
 
-	// returns inuse versus free
+	// Usage returns inuse versus free
 	Usage() DockerPoolStats
 }
 

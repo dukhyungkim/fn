@@ -27,7 +27,7 @@ func (c1 Config) Equals(c2 Config) bool {
 	return true
 }
 
-// implements sql.Valuer, returning a string
+// Value implements sql.Valuer, returning a string
 func (c Config) Value() (driver.Value, error) {
 	if len(c) < 1 {
 		return driver.Value(string("")), nil
@@ -38,7 +38,7 @@ func (c Config) Value() (driver.Value, error) {
 	return driver.Value(b.String()), err
 }
 
-// implements sql.Scanner
+// Scan implements sql.Scanner
 func (c *Config) Scan(value interface{}) error {
 	if value == nil {
 		*c = nil
@@ -87,7 +87,7 @@ func (h1 Headers) Equals(h2 Headers) bool {
 	return true
 }
 
-// implements sql.Valuer, returning a string
+// Value implements sql.Valuer, returning a string
 func (h Headers) Value() (driver.Value, error) {
 	if len(h) < 1 {
 		return driver.Value(string("")), nil
@@ -98,7 +98,7 @@ func (h Headers) Value() (driver.Value, error) {
 	return driver.Value(b.String()), err
 }
 
-// implements sql.Scanner
+// Scan implements sql.Scanner
 func (h *Headers) Scan(value interface{}) error {
 	if value == nil {
 		*h = nil
@@ -126,7 +126,7 @@ func (h *Headers) Scan(value interface{}) error {
 	return fmt.Errorf("headers invalid db format: %T %T value, err: %v", value, bv, err)
 }
 
-// MilliCPU units
+// MilliCPUs MilliCPU units
 type MilliCPUs uint64
 
 const (
@@ -134,7 +134,7 @@ const (
 	MaxMilliCPUs = 1024000 // 1024 CPUs
 )
 
-// implements fmt.Stringer
+// String implements fmt.Stringer
 func (c MilliCPUs) String() string {
 	if c == 0 {
 		return ""
@@ -142,7 +142,7 @@ func (c MilliCPUs) String() string {
 	return fmt.Sprintf("%dm", c)
 }
 
-// implements json.Unmarshaler
+// UnmarshalJSON implements json.Unmarshaler
 func (c *MilliCPUs) UnmarshalJSON(data []byte) error {
 
 	outer := bytes.TrimSpace(data)
@@ -185,7 +185,7 @@ func (c *MilliCPUs) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// implements json.Marshaler
+// MarshalJSON implements json.Marshaler
 func (c *MilliCPUs) MarshalJSON() ([]byte, error) {
 
 	if *c < MinMilliCPUs || *c > MaxMilliCPUs {
