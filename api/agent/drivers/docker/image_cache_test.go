@@ -18,7 +18,7 @@ func isNotifySet(ctx context.Context, notify <-chan struct{}) bool {
 
 func TestImageCacherBasic1(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	blTag := "zoo"
@@ -102,7 +102,7 @@ func TestImageCacherBasic1(t *testing.T) {
 
 func TestImageCacherBasic2(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	obj := NewImageCache([]string{}, 20)
@@ -142,7 +142,7 @@ func TestImageCacherBasic2(t *testing.T) {
 
 func TestImageCacherBasic3(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	obj := NewImageCache([]string{}, 20)

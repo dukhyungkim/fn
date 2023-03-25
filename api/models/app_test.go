@@ -21,7 +21,7 @@ func appReflectType() reflect.Type {
 
 func configGenerator() gopter.Gen {
 	return gen.MapOf(gen.AlphaString(), gen.AlphaString()).Map(func(m map[string]string) Config {
-		return Config(m)
+		return m
 	})
 }
 

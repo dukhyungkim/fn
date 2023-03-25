@@ -24,7 +24,7 @@ type Stats []Stat
 // implements sql.Valuer, returning a string
 func (s Stats) Value() (driver.Value, error) {
 	if len(s) < 1 {
-		return driver.Value(string("")), nil
+		return driver.Value(""), nil
 	}
 	var b bytes.Buffer
 	err := json.NewEncoder(&b).Encode(s)

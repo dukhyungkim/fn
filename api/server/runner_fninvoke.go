@@ -120,7 +120,7 @@ func (s *Server) fnInvoke(resp http.ResponseWriter, req *http.Request, app *mode
 	}
 
 	// because we can...
-	writer.Header().Set("Content-Length", strconv.Itoa(int(buf.Len())))
+	writer.Header().Set("Content-Length", strconv.Itoa(buf.Len()))
 
 	// buffered response writer traps status (so we can add headers), we need to write it still
 	if writer.Status() > 0 {

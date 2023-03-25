@@ -30,7 +30,7 @@ func (c1 Config) Equals(c2 Config) bool {
 // Value implements sql.Valuer, returning a string
 func (c Config) Value() (driver.Value, error) {
 	if len(c) < 1 {
-		return driver.Value(string("")), nil
+		return driver.Value(""), nil
 	}
 	var b bytes.Buffer
 	err := json.NewEncoder(&b).Encode(c)
@@ -90,7 +90,7 @@ func (h1 Headers) Equals(h2 Headers) bool {
 // Value implements sql.Valuer, returning a string
 func (h Headers) Value() (driver.Value, error) {
 	if len(h) < 1 {
-		return driver.Value(string("")), nil
+		return driver.Value(""), nil
 	}
 	var b bytes.Buffer
 	err := json.NewEncoder(&b).Encode(h)

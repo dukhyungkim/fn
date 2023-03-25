@@ -72,7 +72,7 @@ func CallCount(o *mock.Mock, funcName string) int {
 // Simple empty list with user error, should fail quick with user error
 func TestNaivePlacer_EmptyList_UserError(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(2*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	cfg := NewPlacerConfig()
@@ -96,11 +96,11 @@ func TestNaivePlacer_EmptyList_UserError(t *testing.T) {
 // Simple empty list without no error, should spin and wait for runners until placer timeout
 func TestNaivePlacer_EmptyList_NoError(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(2*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	cfg := NewPlacerConfig()
-	cfg.PlacerTimeout = time.Duration(500 * time.Millisecond)
+	cfg.PlacerTimeout = 500 * time.Millisecond
 
 	placer := NewNaivePlacer(&cfg)
 
@@ -120,11 +120,11 @@ func TestNaivePlacer_EmptyList_NoError(t *testing.T) {
 // Simple empty list with service error, should spin and wait for runners until placer timeout
 func TestNaivePlacer_EmptyList_WithServiceError(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(2*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	cfg := NewPlacerConfig()
-	cfg.PlacerTimeout = time.Duration(500 * time.Millisecond)
+	cfg.PlacerTimeout = 500 * time.Millisecond
 
 	placer := NewNaivePlacer(&cfg)
 
@@ -149,11 +149,11 @@ func TestNaivePlacer_EmptyList_WithServiceError(t *testing.T) {
 // list becomes empty.
 func TestNaivePlacer_SimpleList_UserError(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(2*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	cfg := NewPlacerConfig()
-	cfg.PlacerTimeout = time.Duration(500 * time.Millisecond)
+	cfg.PlacerTimeout = 500 * time.Millisecond
 	placer := NewNaivePlacer(&cfg)
 
 	pool := &dummyPool{}
@@ -190,11 +190,11 @@ func TestNaivePlacer_SimpleList_UserError(t *testing.T) {
 // Start with simple list with no error with runners-503 indefinitely
 func TestNaivePlacer_SimpleList_NoError(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(2*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	cfg := NewPlacerConfig()
-	cfg.PlacerTimeout = time.Duration(500 * time.Millisecond)
+	cfg.PlacerTimeout = 500 * time.Millisecond
 	placer := NewNaivePlacer(&cfg)
 
 	pool := &dummyPool{}

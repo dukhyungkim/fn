@@ -8,6 +8,13 @@ import (
 	"io"
 	"log"
 	"math/rand"
+	"net/http"
+	"net/url"
+	"os"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
 
 	"github.com/dukhyungkim/fn/api/agent"
 	"github.com/dukhyungkim/fn/api/agent/drivers"
@@ -62,9 +69,9 @@ func CreateRunnerPool(runners []string) (pool.RunnerPool, error) {
 	// Keepalive Client Side Settings (see: https://godoc.org/google.golang.org/grpc/keepalive#ClientParameters)
 	//
 	dialOpts = append(dialOpts, grpc.WithKeepaliveParams(keepalive.ClientParameters{
-		Time:                time.Duration(60 * time.Second), // initiate a client initiated ping after 60 secs of inactivity
-		Timeout:             time.Duration(10 * time.Second), // after a client initiated ping, the amount of time to wait for server to respond
-		PermitWithoutStream: true,                            // send keepalive pings even if no active streams/RPCs
+		Time:                60 * time.Second, // initiate a client initiated ping after 60 secs of inactivity
+		Timeout:             10 * time.Second, // after a client initiated ping, the amount of time to wait for server to respond
+		PermitWithoutStream: true,             // send keepalive pings even if no active streams/RPCs
 	}))
 
 	return agent.NewStaticRunnerPool(runners, nil, dialOpts...), nil
@@ -380,12 +387,12 @@ func SetUpPureRunnerNode(ctx context.Context, nodeNum int, StatusBarrierFile str
 	// Keepalive Server Side Settings (see: https://godoc.org/google.golang.org/grpc/keepalive#ServerParameters)
 	//
 	grpcOpts = append(grpcOpts, grpc.KeepaliveParams(keepalive.ServerParameters{
-		Time:    time.Duration(60 * time.Second), // initiate a server initiated ping after 60 secs of inactivity
-		Timeout: time.Duration(10 * time.Second), // after a server ping, the amount of time to wait for client to respond
+		Time:    60 * time.Second, // initiate a server initiated ping after 60 secs of inactivity
+		Timeout: 10 * time.Second, // after a server ping, the amount of time to wait for client to respond
 	}))
 	grpcOpts = append(grpcOpts, grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
-		MinTime:             time.Duration(5 * time.Second), // more frequent (client initiated) pings than every 5 secs is considered malicious
-		PermitWithoutStream: true,                           // allow client pings even if no active stream
+		MinTime:             5 * time.Second, // more frequent (client initiated) pings than every 5 secs is considered malicious
+		PermitWithoutStream: true,            // allow client pings even if no active stream
 	}))
 
 	var streamer logStream

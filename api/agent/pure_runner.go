@@ -609,7 +609,7 @@ const (
 
 	// Total context timeout (scheduler+execution.) We need to allocate plenty of time here.
 	// 60 seconds should be enough to provoke disk I/O errors, docker timeouts. etc.
-	StatusCtxTimeout = time.Duration(60 * time.Second)
+	StatusCtxTimeout = 60 * time.Second
 )
 
 // Log Streamer to manage log gRPC interface

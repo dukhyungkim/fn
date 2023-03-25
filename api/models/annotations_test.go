@@ -23,7 +23,7 @@ func (m Annotations) withRawKey(key string, val string) Annotations {
 		newMd[k] = v
 	}
 
-	v := annotationValue([]byte(val))
+	v := annotationValue(val)
 	newMd[key] = &v
 	return newMd
 }

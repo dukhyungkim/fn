@@ -60,7 +60,7 @@ func LimitRequestBody(max int64) Option {
 
 func limitRequestBody(max int64) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		cl := int64(c.Request.ContentLength)
+		cl := c.Request.ContentLength
 		if cl > max {
 			// try to deny this quickly, instead of just letting it get lopped off
 

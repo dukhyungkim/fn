@@ -34,7 +34,7 @@ func (c *mockClient) InspectImage(ctx context.Context, name string) (i *docker.I
 // Basic startup scenario. ListImages() with exempt as well as exceeding capacity images
 // should result in image removals.
 func TestImageCleaner1(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	dkr := &DockerDriver{
@@ -89,7 +89,7 @@ func TestImageCleaner1(t *testing.T) {
 // Basic cookie scenario, cookie marks a huge image as busy, then unmark it. Image
 // cache should not report IsMaxCapacity() first, but after unmark, it should...
 func TestImageCleaner2(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	dkr := &DockerDriver{

@@ -182,7 +182,7 @@ func TestExecuteRunnerStatusConcurrent(t *testing.T) {
 	}
 
 	// delay
-	time.Sleep(time.Duration(2 * time.Second))
+	time.Sleep(2 * time.Second)
 
 	// now we should get fresh data
 	for _, dest := range runners {
@@ -253,7 +253,7 @@ func TestExecuteRunnerStatusNoNet(t *testing.T) {
 
 	// Let status hc caches expire.
 	select {
-	case <-time.After(time.Duration(2 * time.Second)):
+	case <-time.After(2 * time.Second):
 	case <-ctx.Done():
 		t.Fatal("Timeout")
 	}
@@ -301,7 +301,7 @@ func TestCustomHealthChecker(t *testing.T) {
 
 	// Let status hc caches expire.
 	select {
-	case <-time.After(time.Duration(2 * time.Second)):
+	case <-time.After(2 * time.Second):
 	case <-ctx.Done():
 		t.Fatal("Timeout")
 	}

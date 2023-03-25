@@ -224,7 +224,7 @@ func syncImageCleaner(ctx context.Context, driver *DockerDriver) {
 		return
 	}
 
-	const imageListTimeout = time.Duration(60 * time.Second)
+	const imageListTimeout = 60 * time.Second
 
 	ctx, log := common.LoggerWithFields(ctx, logrus.Fields{"stack": "syncImageCleaner"})
 	limiter := rate.NewLimiter(2.0, 1)
@@ -256,7 +256,7 @@ func runImageStats(ctx context.Context, driver *DockerDriver) {
 		return
 	}
 
-	const statsSamplerDuration = time.Duration(2 * time.Second)
+	const statsSamplerDuration = 2 * time.Second
 	ctx, _ = common.LoggerWithFields(ctx, logrus.Fields{"stack": "runImageStats"})
 
 	go func() {
@@ -281,7 +281,7 @@ func runImageCleaner(ctx context.Context, driver *DockerDriver) {
 		return
 	}
 
-	const removeImgTimeout = time.Duration(60 * time.Second)
+	const removeImgTimeout = 60 * time.Second
 
 	ctx, log := common.LoggerWithFields(ctx, logrus.Fields{"stack": "runImageCleaner"})
 	limiter := rate.NewLimiter(2.0, 1)

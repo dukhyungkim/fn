@@ -352,7 +352,7 @@ func main() {
 					}
 					time.Sleep(time.Millisecond * time.Duration(delay))
 				}
-				os.Exit(int(-1))
+				os.Exit(-1)
 			}
 		}
 	}

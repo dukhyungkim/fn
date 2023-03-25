@@ -166,7 +166,7 @@ func (m Annotations) Get(key string) ([]byte, bool) {
 func (m Annotations) GetString(key string) (string, error) {
 	if v, ok := m[key]; ok {
 		var s string
-		if err := json.Unmarshal([]byte(*v), &s); err != nil {
+		if err := json.Unmarshal(*v, &s); err != nil {
 			return "", err
 		}
 		return s, nil
@@ -220,7 +220,7 @@ func (m Annotations) clone() Annotations {
 // Value implements sql.Valuer, returning a string
 func (m Annotations) Value() (driver.Value, error) {
 	if len(m) < 1 {
-		return driver.Value(string("")), nil
+		return driver.Value(""), nil
 	}
 	var b bytes.Buffer
 	err := json.NewEncoder(&b).Encode(m)

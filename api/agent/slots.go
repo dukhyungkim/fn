@@ -324,7 +324,7 @@ func getSlotQueueKey(call *call, slotExtns string) string {
 	binary.LittleEndian.PutUint32(byt[:4], uint32(call.IdleTimeout))
 	hash.Write(byt[:4])
 
-	binary.LittleEndian.PutUint32(byt[:4], uint32(call.TmpFsSize))
+	binary.LittleEndian.PutUint32(byt[:4], call.TmpFsSize)
 	hash.Write(byt[:4])
 
 	binary.LittleEndian.PutUint64(byt[:], call.Memory)

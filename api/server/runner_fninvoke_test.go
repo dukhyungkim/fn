@@ -35,7 +35,7 @@ func TestBadRequests(t *testing.T) {
 		{"/invoke/notfn", "", "", http.StatusNotFound, models.ErrFnsNotFound},
 	} {
 		request := createRequest(t, http.MethodPost, test.path, strings.NewReader(test.body))
-		request.Header = map[string][]string{"Content-Type": []string{test.contentType}}
+		request.Header = map[string][]string{"Content-Type": {test.contentType}}
 		_, rec := routerRequest2(t, srv.Router, request)
 
 		if rec.Code != test.expectedCode {
@@ -141,7 +141,7 @@ func TestFnInvokeRunnerExecution(t *testing.T) {
 	app := &models.App{ID: "app_id", Name: "myapp"}
 
 	models.MaxMemory = uint64(1024 * 1024 * 1024) // 1024 TB
-	hugeMem := uint64(models.MaxMemory - 1)
+	hugeMem := models.MaxMemory - 1
 
 	// quickly exit with exit code 0 without serving http/uds, or sleep 20 secs, then exit.. Two failure scenarios.
 	failQuickCfg := map[string]string{"ENABLE_INIT_EXIT": "0"}

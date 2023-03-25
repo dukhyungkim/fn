@@ -904,8 +904,8 @@ func testCall() *models.Call {
 	}
 	headers := map[string][]string{
 		// FromRequest would insert these from original HTTP request
-		"Content-Type":   []string{contentType},
-		"Content-Length": []string{contentLength},
+		"Content-Type":   {contentType},
+		"Content-Length": {contentLength},
 	}
 
 	return &models.Call{
@@ -1435,7 +1435,7 @@ func TestContainerDisableIO(t *testing.T) {
 
 func TestSlotErrorRetention(t *testing.T) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	app := &models.App{ID: "app_id"}
@@ -1523,7 +1523,7 @@ func TestSlotErrorRetention(t *testing.T) {
 	for idx := 0; idx < concurrency; idx++ {
 		go func(id int) {
 			defer wg.Done()
-			dctx, cancel := context.WithTimeout(ctx, time.Duration(1000*time.Millisecond))
+			dctx, cancel := context.WithTimeout(ctx, 1000*time.Millisecond)
 			defer cancel()
 
 			for dctx.Err() == nil {
@@ -1712,7 +1712,7 @@ func TestContainerBeforeAfterWrapOK(t *testing.T) {
 		t.Fatalf("not expected error but got %v", err)
 	}
 
-	<-time.After(time.Duration(1 * time.Second))
+	<-time.After(1 * time.Second)
 	assert.Equal(t, cust.isClosed, false)
 	assert.Equal(t, cust.isBefore, true)
 	assert.Equal(t, cust.isAfter, true)
@@ -1757,7 +1757,7 @@ func TestContainerBeforeWrapNotOK(t *testing.T) {
 		t.Fatalf("expected special error but got %v", err)
 	}
 
-	<-time.After(time.Duration(1 * time.Second))
+	<-time.After(1 * time.Second)
 	assert.Equal(t, cust.isClosed, true)
 	assert.Equal(t, cust.isBefore, true)
 	assert.Equal(t, cust.isAfter, false)
@@ -1802,7 +1802,7 @@ func TestContainerAfterWrapNotOK(t *testing.T) {
 		t.Fatalf("expected special error but got %v", err)
 	}
 
-	<-time.After(time.Duration(1 * time.Second))
+	<-time.After(1 * time.Second)
 	assert.Equal(t, cust.isClosed, true)
 	assert.Equal(t, cust.isBefore, true)
 	assert.Equal(t, cust.isAfter, true)

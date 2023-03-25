@@ -386,7 +386,7 @@ func (a *resourceTracker) initializeMemory(cfg *Config) {
 func getMemoryHeadRoom(usableMemory uint64, cfg *Config) (uint64, error) {
 
 	// get %10 of the RAM
-	headRoom := uint64(usableMemory / 10)
+	headRoom := usableMemory / 10
 
 	// TODO: improve this pre-fork calculation, we should fetch/query this
 	// instead of estimate below.
