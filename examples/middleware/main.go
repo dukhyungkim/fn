@@ -21,7 +21,7 @@ func main() {
 			start := time.Now()
 			fmt.Println("CustomMiddlewareFunc called at:", start)
 			next.ServeHTTP(w, r)
-			fmt.Println("Duration:", (time.Now().Sub(start)))
+			fmt.Println("Duration:", time.Now().Sub(start))
 		})
 	})
 
