@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -48,10 +47,10 @@ func NewClient(u string) (agent.DataAccess, error) {
 		Timeout: 60 * time.Second,
 		Transport: &http.Transport{
 			Proxy: http.ProxyFromEnvironment,
-			Dial: (&net.Dialer{
+			DialContext: (&net.Dialer{
 				Timeout:   30 * time.Second,
 				KeepAlive: 30 * time.Second,
-			}).Dial,
+			}).DialContext,
 			MaxIdleConns:        512,
 			MaxIdleConnsPerHost: 128,
 			IdleConnTimeout:     90 * time.Second,
@@ -190,7 +189,7 @@ func (cl *client) once(ctx context.Context, request, result interface{}, method 
 	if err != nil {
 		return err
 	}
-	defer func() { io.Copy(ioutil.Discard, resp.Body); resp.Body.Close() }()
+	defer func() { io.Copy(io.Discard, resp.Body); resp.Body.Close() }()
 
 	if resp.StatusCode >= 300 {
 		// one of our errors

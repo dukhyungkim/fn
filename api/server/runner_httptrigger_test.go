@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"reflect"
@@ -175,7 +175,7 @@ func TestTriggerRunnerExecEmptyBody(t *testing.T) {
 			trx := fmt.Sprintf("_trx_%d_", i)
 			body := strings.NewReader(strings.Replace(emptyBody, "_TRX_ID_", trx, 1))
 			_, rec := routerRequest(t, srv.Router, "GET", test.path, body)
-			respBytes, _ := ioutil.ReadAll(rec.Body)
+			respBytes, _ := io.ReadAll(rec.Body)
 			respBody := string(respBytes)
 			maxBody := len(respBody)
 			if maxBody > 1024 {
@@ -319,7 +319,7 @@ func TestTriggerRunnerExecution(t *testing.T) {
 				req.Header = test.headers
 			}
 			_, rec := routerRequest2(t, srv.Router, req)
-			respBytes, _ := ioutil.ReadAll(rec.Body)
+			respBytes, _ := io.ReadAll(rec.Body)
 			respBody := string(respBytes)
 			maxBody := len(respBody)
 			if maxBody > 1024 {
@@ -418,7 +418,7 @@ func TestTriggerRunnerTimeout(t *testing.T) {
 			trx := fmt.Sprintf("_trx_%d_", i)
 			body := strings.NewReader(strings.Replace(test.body, "_TRX_ID_", trx, 1))
 			_, rec := routerRequest(t, srv.Router, test.method, test.path, body)
-			respBytes, _ := ioutil.ReadAll(rec.Body)
+			respBytes, _ := io.ReadAll(rec.Body)
 			respBody := string(respBytes)
 			maxBody := len(respBody)
 			if maxBody > 1024 {

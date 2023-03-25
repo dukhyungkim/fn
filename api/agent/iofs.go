@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -64,7 +63,7 @@ func newDirectoryIOFS(ctx context.Context, cfg *Config) (*directoryIOFS, error) 
 	}
 
 	// create a tmpdir
-	iofsAgentDir, err := ioutil.TempDir(cfg.IOFSAgentPath, "iofs")
+	iofsAgentDir, err := os.MkdirTemp(cfg.IOFSAgentPath, "iofs")
 	if err != nil {
 		handleErr(iofsAgentDir)
 		return nil, fmt.Errorf("cannot create tmpdir for iofs: %v", err)

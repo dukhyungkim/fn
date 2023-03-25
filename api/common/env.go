@@ -1,7 +1,6 @@
 package common
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -17,7 +16,7 @@ func GetEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	} else if value, ok := os.LookupEnv(key + "_FILE"); ok {
-		dat, err := ioutil.ReadFile(filepath.Clean(value))
+		dat, err := os.ReadFile(filepath.Clean(value))
 		if err == nil {
 			return string(dat)
 		}
@@ -37,7 +36,7 @@ func GetEnvInt(key string, fallback int) int {
 		}
 		return i
 	} else if value, ok := os.LookupEnv(key + "_FILE"); ok {
-		dat, err := ioutil.ReadFile(filepath.Clean(value))
+		dat, err := os.ReadFile(filepath.Clean(value))
 		if err == nil {
 			var err error
 			var i int

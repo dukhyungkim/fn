@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -42,7 +41,7 @@ func AddClientCA(tlsConf *tls.Config, clientCAPath string) error {
 		return err
 	}
 	// Create a certificate pool from the certificate authority
-	authority, err := ioutil.ReadFile(filepath.Clean(clientCAPath))
+	authority, err := os.ReadFile(filepath.Clean(clientCAPath))
 	if err != nil {
 		return fmt.Errorf("Could not read client CA (%s) certificate: %s", clientCAPath, err)
 	}
@@ -66,7 +65,7 @@ func AddCA(tlsConf *tls.Config, caPath string) error {
 		return err
 	}
 
-	ca, err := ioutil.ReadFile(filepath.Clean(caPath))
+	ca, err := os.ReadFile(filepath.Clean(caPath))
 	if err != nil {
 		return fmt.Errorf("could not read ca (%s) certificate: %s", caPath, err)
 	}
