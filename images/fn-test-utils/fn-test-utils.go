@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	fdk "github.com/fnproject/fdk-go"
+	"github.com/fnproject/fdk-go"
 )
 
 const (

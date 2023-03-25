@@ -26,15 +26,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
-
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"os"
-	"strconv"
-	"strings"
-	"testing"
-	"time"
 )
 
 const (
@@ -172,12 +163,12 @@ func downloadMetrics() {
 		logrus.WithError(err).Fatal("Fetching metrics, got unexpected error")
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		logrus.WithError(err).Fatal("Reading metrics body, got unexpected error")
 	}
 
-	err = ioutil.WriteFile(fileName, body, 0644)
+	err = os.WriteFile(fileName, body, 0644)
 	if err != nil {
 		logrus.WithError(err).Fatalf("Writing metrics body to %v, got unexpected error", fileName)
 	}

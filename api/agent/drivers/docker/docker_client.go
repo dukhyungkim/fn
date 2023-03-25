@@ -244,7 +244,7 @@ func RegisterViews(tagKeys []string, latencyDist []float64) {
 	}
 
 	// docker instance tags
-	emptyTags := []tag.Key{}
+	var emptyTags []tag.Key
 
 	err := view.Register(
 		common.CreateViewWithTags(dockerRetriesMeasure, view.Count(), defaultTags),

@@ -5,10 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 
-	fdk "github.com/fnproject/fdk-go"
+	"github.com/fnproject/fdk-go"
 )
 
 func main() {
@@ -18,7 +17,7 @@ func main() {
 func myHandler(ctx context.Context, in io.Reader, out io.Writer) {
 	var input map[string]interface{}
 
-	body, err := ioutil.ReadAll(in)
+	body, err := io.ReadAll(in)
 	if err != nil {
 		log.Print("could not read input")
 		fdk.WriteStatus(out, 530)

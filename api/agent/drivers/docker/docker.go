@@ -274,7 +274,7 @@ func runImageStats(ctx context.Context, driver *DockerDriver) {
 }
 
 // runImageCleaner runs continuously and monitors image cache state. If the
-// cache is over the high water mark limit, then it tries to remove least recently
+// cache is over the high watermark limit, then it tries to remove least recently
 // used image.
 func runImageCleaner(ctx context.Context, driver *DockerDriver) {
 	if driver.imgCache == nil {

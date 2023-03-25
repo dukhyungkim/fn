@@ -4,13 +4,14 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	"github.com/dukhyungkim/fn/api/datastore/sql/migratex"
 	"github.com/dukhyungkim/fn/api/id"
 	"github.com/dukhyungkim/fn/api/models"
 	"github.com/jmoiron/sqlx"
 )
 
-// routes.annotations is retconned to NULLABLE here to allow migrations to proceed
+// routes.annotations is reconnected to NULLABLE here to allow migrations to proceed
 // see migrations 11 and 12 that fix this back up to NOT NULL
 var sqlStatements = [...]string{`CREATE TABLE IF NOT EXISTS routes (
 	app_id varchar(256) NOT NULL,
@@ -81,7 +82,7 @@ func up10(ctx context.Context, tx *sqlx.Tx) error {
 		return err
 	}
 
-	res := []*models.App{}
+	var res []*models.App
 	for rows.Next() {
 
 		var app models.App
@@ -184,7 +185,7 @@ func down10(ctx context.Context, tx *sqlx.Tx) error {
 		return err
 	}
 
-	res := []*models.App{}
+	var res []*models.App
 	for rows.Next() {
 		var app models.App
 		err := rows.StructScan(&app)

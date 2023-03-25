@@ -3,7 +3,7 @@
 package common
 
 import (
-	"io/ioutil"
+	"io"
 	"net/url"
 
 	"github.com/sirupsen/logrus"
@@ -17,6 +17,6 @@ func NewSyslogHook(url *url.URL, prefix string) error {
 	}
 	logrus.AddHook(syslog)
 	// TODO we could support multiple destinations...
-	logrus.SetOutput(ioutil.Discard)
+	logrus.SetOutput(io.Discard)
 	return nil
 }

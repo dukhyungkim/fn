@@ -27,7 +27,7 @@ func (c *mockClientPuller) PullImage(opts docker.PullImageOptions, auth docker.A
 	return c.err
 }
 
-// Lets do concurrent docker-pulls for an image with two different tags. This should results in only
+// Let's do concurrent docker-pulls for an image with two different tags. This should results in only
 // two calls to docker-pull.
 func TestImagePullConcurrent1(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
@@ -75,7 +75,7 @@ func TestImagePullConcurrent1(t *testing.T) {
 	}
 }
 
-// Lets do concurrent docker-pulls for an image but with error.
+// Let's do concurrent docker-pulls for an image but with error.
 func TestImagePullConcurrent2(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(10*time.Second))
 	defer cancel()

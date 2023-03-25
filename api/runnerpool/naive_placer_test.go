@@ -131,7 +131,7 @@ func TestNaivePlacer_EmptyList_WithServiceError(t *testing.T) {
 	pool := &dummyPool{}
 	call := &dummyCall{}
 
-	// service error with 500, should not short cut, but should return this error
+	// service error with 500, should not shortcut, but should return this error
 	poolErr := models.ErrCallHandlerNotFound
 
 	pool.On("Runners", ctx, call).Return([]Runner{}, poolErr)
@@ -145,7 +145,7 @@ func TestNaivePlacer_EmptyList_WithServiceError(t *testing.T) {
 }
 
 // Start with simple list with no error with runners-503 twice, then empty list with user error.
-// should round robin the runners twice, but then fail quick with user error once the runner
+// should round-robin the runners twice, but then fail quick with user error once the runner
 // list becomes empty.
 func TestNaivePlacer_SimpleList_UserError(t *testing.T) {
 
@@ -170,7 +170,7 @@ func TestNaivePlacer_SimpleList_UserError(t *testing.T) {
 	// return 2-runner list twice.
 	pool.On("Runners", ctx, call).Return([]Runner{runner1, runner2}, nil).Twice()
 
-	// finally, return empty list, with api error with 502, should short cut
+	// finally, return empty list, with api error with 502, should shortcut
 	poolErr := models.ErrFunctionFailed
 	pool.On("Runners", ctx, call).Return([]Runner{}, poolErr).Once()
 

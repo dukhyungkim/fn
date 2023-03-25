@@ -1695,7 +1695,7 @@ func TestContainerBeforeAfterWrapOK(t *testing.T) {
 		drv: drv,
 	}
 
-	opts := []Option{}
+	var opts []Option
 	opts = append(opts, WithConfig(cfg))
 	opts = append(opts, WithDockerDriver(cust))
 
@@ -1740,7 +1740,7 @@ func TestContainerBeforeWrapNotOK(t *testing.T) {
 		},
 	}
 
-	opts := []Option{}
+	var opts []Option
 	opts = append(opts, WithConfig(cfg))
 	opts = append(opts, WithDockerDriver(cust))
 
@@ -1785,7 +1785,7 @@ func TestContainerAfterWrapNotOK(t *testing.T) {
 		},
 	}
 
-	opts := []Option{}
+	var opts []Option
 	opts = append(opts, WithConfig(cfg))
 	opts = append(opts, WithDockerDriver(cust))
 
