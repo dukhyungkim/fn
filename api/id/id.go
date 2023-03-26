@@ -22,18 +22,18 @@ func SetMachineId(ID uint64) {
 	machineID = ID
 }
 
-// SetMachineIdHost is a convenience wrapper to hide bit twiddling of
+// SetMachineIdHost is a convenience wrapper to hide a bit twiddling of
 // calling SetMachineId, it has the same constraints as SetMachineId
-// with an addition that net.IP must be a ipv4 address.
+// with an addition that net.IP must be an ipv4 address.
 func SetMachineIdHost(addr net.IP, port uint16) {
-	var machineID uint64 // 48 bits
-	machineID |= uint64(addr[0]) << 40
-	machineID |= uint64(addr[1]) << 32
-	machineID |= uint64(addr[2]) << 24
-	machineID |= uint64(addr[3]) << 16
-	machineID |= uint64(port)
+	var mID uint64 // 48 bits
+	mID |= uint64(addr[0]) << 40
+	mID |= uint64(addr[1]) << 32
+	mID |= uint64(addr[2]) << 24
+	mID |= uint64(addr[3]) << 16
+	mID |= uint64(port)
 
-	SetMachineId(machineID)
+	SetMachineId(mID)
 }
 
 // New will generate a new Id for use. New is safe to be called from
@@ -96,7 +96,7 @@ func (id Id) String() string {
 	return string(b[:])
 }
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface by
+// MarshalBinary implements the encoding.BinaryMarshaller interface by
 // returning the Id as a byte slice.
 func (id Id) MarshalBinary() ([]byte, error) {
 	var b [EncodedSize]byte
@@ -117,26 +117,26 @@ func (id Id) MarshalBinaryTo(dst []byte) error {
 // UnmarshalBinary implements the encoding.BinaryUnmarshaler interface by
 // copying the passed data and converting it to an Id. ErrDataSize is
 // returned if the data length is different from Id length.
-func (id *Id) UnmarshalBinary(data []byte) error {
-	if len(data) != len(*id) {
+func (id Id) UnmarshalBinary(data []byte) error {
+	if len(data) != len(id) {
 		return errors.New("can't unmarshal id from unexpected byte slice size")
 	}
 
-	copy((*id)[:], data)
+	copy((id)[:], data)
 	return nil
 }
 
 // Encoding is the base 32 encoding alphabet used in Id strings.
 const Encoding = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
-// MarshalText implements the encoding.TextMarshaler interface by
-// returning the string encoded Id.
+// MarshalText implements the encoding.TextMarshaller interface by
+// returning the string encoded id.
 func (id Id) MarshalText() ([]byte, error) {
 	var b [EncodedSize]byte
 	return b[:], id.MarshalTextTo(b[:])
 }
 
-// MarshalTextTo writes the Id as a string to the given buffer.
+// MarshalTextTo writes the id as a string to the given buffer.
 // an error is returned when the len(dst) != 26.
 func (id Id) MarshalTextTo(dst []byte) error {
 	// Optimized unrolled loop ahead.
@@ -179,7 +179,7 @@ func (id Id) MarshalTextTo(dst []byte) error {
 	return nil
 }
 
-// Byte to index table for O(1) lookups when unmarshaling.
+// Byte to index table for O(1) lookups when unmarshalling.
 // We use 0xFF as sentinel value for invalid indexes.
 var dec = [...]byte{
 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -210,7 +210,7 @@ var dec = [...]byte{
 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 }
 
-// EncodedSize is the length of a text encoded Id.
+// EncodedSize is the length of a text encoded id.
 const EncodedSize = 26
 
 // ValidateText returns true if the data is a valid
@@ -233,11 +233,11 @@ func ValidateText(v []byte) bool {
 }
 
 // UnmarshalText implements the encoding.TextUnmarshaler interface by
-// parsing the data as string encoded Id.
+// parsing the data as string encoded id.
 //
 // an error is returned if the len(v) is different from an encoded
-// Id's length. Invalid encodings produce undefined Ids.
-func (id *Id) UnmarshalText(v []byte) error {
+// id's length. Invalid encodings produce undefined Ids.
+func (id Id) UnmarshalText(v []byte) error {
 	// Optimized unrolled loop ahead.
 	// From https://github.com/RobThree/NUlid
 	if len(v) != EncodedSize {
@@ -245,24 +245,24 @@ func (id *Id) UnmarshalText(v []byte) error {
 	}
 
 	// 6 bytes timestamp (48 bits)
-	(*id)[0] = (dec[v[0]] << 5) | dec[v[1]]
-	(*id)[1] = (dec[v[2]] << 3) | (dec[v[3]] >> 2)
-	(*id)[2] = (dec[v[3]] << 6) | (dec[v[4]] << 1) | (dec[v[5]] >> 4)
-	(*id)[3] = (dec[v[5]] << 4) | (dec[v[6]] >> 1)
-	(*id)[4] = (dec[v[6]] << 7) | (dec[v[7]] << 2) | (dec[v[8]] >> 3)
-	(*id)[5] = (dec[v[8]] << 5) | dec[v[9]]
+	id[0] = (dec[v[0]] << 5) | dec[v[1]]
+	id[1] = (dec[v[2]] << 3) | (dec[v[3]] >> 2)
+	id[2] = (dec[v[3]] << 6) | (dec[v[4]] << 1) | (dec[v[5]] >> 4)
+	id[3] = (dec[v[5]] << 4) | (dec[v[6]] >> 1)
+	id[4] = (dec[v[6]] << 7) | (dec[v[7]] << 2) | (dec[v[8]] >> 3)
+	id[5] = (dec[v[8]] << 5) | dec[v[9]]
 
 	// 10 bytes of entropy (80 bits)
-	(*id)[6] = (dec[v[10]] << 3) | (dec[v[11]] >> 2)
-	(*id)[7] = (dec[v[11]] << 6) | (dec[v[12]] << 1) | (dec[v[13]] >> 4)
-	(*id)[8] = (dec[v[13]] << 4) | (dec[v[14]] >> 1)
-	(*id)[9] = (dec[v[14]] << 7) | (dec[v[15]] << 2) | (dec[v[16]] >> 3)
-	(*id)[10] = (dec[v[16]] << 5) | dec[v[17]]
-	(*id)[11] = (dec[v[18]] << 3) | dec[v[19]]>>2
-	(*id)[12] = (dec[v[19]] << 6) | (dec[v[20]] << 1) | (dec[v[21]] >> 4)
-	(*id)[13] = (dec[v[21]] << 4) | (dec[v[22]] >> 1)
-	(*id)[14] = (dec[v[22]] << 7) | (dec[v[23]] << 2) | (dec[v[24]] >> 3)
-	(*id)[15] = (dec[v[24]] << 5) | dec[v[25]]
+	id[6] = (dec[v[10]] << 3) | (dec[v[11]] >> 2)
+	id[7] = (dec[v[11]] << 6) | (dec[v[12]] << 1) | (dec[v[13]] >> 4)
+	id[8] = (dec[v[13]] << 4) | (dec[v[14]] >> 1)
+	id[9] = (dec[v[14]] << 7) | (dec[v[15]] << 2) | (dec[v[16]] >> 3)
+	id[10] = (dec[v[16]] << 5) | dec[v[17]]
+	id[11] = (dec[v[18]] << 3) | dec[v[19]]>>2
+	id[12] = (dec[v[19]] << 6) | (dec[v[20]] << 1) | (dec[v[21]] >> 4)
+	id[13] = (dec[v[21]] << 4) | (dec[v[22]] >> 1)
+	id[14] = (dec[v[22]] << 7) | (dec[v[23]] << 2) | (dec[v[24]] >> 3)
+	id[15] = (dec[v[24]] << 5) | dec[v[25]]
 
 	return nil
 }
@@ -271,23 +271,11 @@ func (id *Id) UnmarshalText(v []byte) error {
 var rEncoding = reverseString(Encoding)
 
 func reverseString(input string) string {
-	// rsc: http://groups.google.com/group/golang-nuts/browse_thread/thread/a0fb81698275eede
-
-	// Get Unicode code points.
-	n := 0
-	rune := make([]rune, len(input))
-	for _, r := range input {
-		rune[n] = r
-		n++
+	runes := []rune(input)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
 	}
-	rune = rune[0:n]
-	// Reverse
-	for i := 0; i < n/2; i++ {
-		rune[i], rune[n-1-i] = rune[n-1-i], rune[i]
-	}
-
-	// Convert back to UTF-8.
-	return string(rune)
+	return string(runes)
 }
 
 // EncodeDescending returns a lexicographically sortable descending encoding

@@ -6,6 +6,8 @@ import (
 	"net"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func BenchmarkGen(b *testing.B) {
@@ -18,37 +20,37 @@ func BenchmarkGen(b *testing.B) {
 func BenchmarkMarshalText(b *testing.B) {
 	id := New()
 	for i := 0; i < b.N; i++ {
-		byts, _ := id.MarshalText()
-		_ = byts
+		bytes, _ := id.MarshalText()
+		_ = bytes
 	}
 }
 
 func BenchmarkUnmarshalText(b *testing.B) {
 	id := New()
-	byts, _ := id.MarshalText()
+	bytes, _ := id.MarshalText()
 	for i := 0; i < b.N; i++ {
 		var id Id
-		id.UnmarshalText(byts)
+		_ = id.UnmarshalText(bytes)
 		_ = id
 	}
 }
 
 func BenchmarkValidateText(b *testing.B) {
 	id := New()
-	byts, _ := id.MarshalText()
+	bytes, _ := id.MarshalText()
 	for i := 0; i < b.N; i++ {
-		ValidateText(byts)
+		ValidateText(bytes)
 	}
 }
 
 func TestValidInValid(t *testing.T) {
 	id := New()
-	byts, _ := id.MarshalText()
-	if !ValidateText(byts) {
+	bytes, _ := id.MarshalText()
+	if !ValidateText(bytes) {
 		t.Fatal("valid id should pass")
 	}
-	byts[5] = ' '
-	if ValidateText(byts) {
+	bytes[5] = ' '
+	if ValidateText(bytes) {
 		t.Fatal("invalid id should not pass")
 	}
 }
@@ -93,5 +95,25 @@ func TestDescending(t *testing.T) {
 		if flip[i] != id[len(id)-1-i] {
 			t.Fatalf("flipped encoding not working. got: %v, want: %v", flip[i], id[len(id)-1-i])
 		}
+	}
+}
+
+func Test_reverseString(t *testing.T) {
+	type args struct {
+		input string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{name: "reverse english string", args: args{input: "ABCDEFG1234"}, want: "4321GFEDCBA"},
+		{name: "reverse korean string", args: args{input: "가나다라마바사1234"}, want: "4321사바마라다나가"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := reverseString(tt.args.input)
+			assert.Equal(t, tt.want, got)
+		})
 	}
 }
